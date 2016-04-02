@@ -9,26 +9,25 @@ See examples
 npm install iso3d --save
 ```
 
-# Usage
+## Usage
 
 ```js
 import {Cube, Camera} from Iso;
 ...
 ```
 
-# Methods
+## Documentation
 
-## Iso
-### Iso.Camera
+#### Iso.Camera
 The global camera for this scene.
-### Camera.zoom(zoomLevel)
-### Camera.position(x, y)
-## Iso.Cube(width, height, depth, [options])
+#### Camera.zoom(zoomLevel)
+#### Camera.position(x, y)
+### Iso.Cube(width, height, depth, [options])
 - options
   - color
 
 
-# Build
+## Build
 
 Run the file watcher and flow typechecker:
 
@@ -39,6 +38,6 @@ npm run watch
 
 This will generate `build/` files and log type mistakes to the console. 
 
-# Similar libraries
+## Similar libraries
 - https://github.com/jdan/isomer
 - https://github.com/nosir/obelisk.js
