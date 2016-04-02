@@ -1,4 +1,2 @@
-// @flow
-
-var str: number = 3;
+var str: number = 5;
 console.log(str);
