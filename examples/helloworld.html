@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello World</title>
+    <style>
+        body {
+            margin: 0;
+        }
+        #container {
+            width: 800px;
+            height: 600px;
+            background-color: cadetblue;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <h1>Hello World</h1>
+    <div id="container"></div>
+
+    <!-- Scripts -->
+    <script src="../build/browser-iso.js"></script>
+    <script>
+        var cube = new Iso.Cube(1, 2, 3);
+
+        var scene = new Iso.Scene();
+        var camera = new Iso.Camera();
+        Iso.render(scene, camera, document.getElementById('container'));
+    </script>
+</body>
+</html>

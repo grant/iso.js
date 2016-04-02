@@ -1,7 +1,7 @@
 # iso
 ## A library for rendering isometric graphics
 
-An isometric graphics library using three.js
+An isometric project graphics library using three.js's orthographic camera
 
 See examples
 
@@ -18,7 +18,7 @@ import {Cube, Camera} from Iso;
 
 ## Documentation
 
-#### Iso.Camera
+### Iso.Camera
 The global camera for this scene.
 #### Camera.zoom(zoomLevel)
 #### Camera.position(x, y)
