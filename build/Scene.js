@@ -24,16 +24,32 @@ var Scene = function () {
 
     this.threeScene = new _three2.default.Scene();
 
-    this.threeScene.add(new _three2.default.AmbientLight(0x333333));
+    // Fog
+    this.threeScene.fog = new _three2.default.FogExp2(0x000000, 5);
 
-    // light
-    var light = new _three2.default.DirectionalLight(0xffffff, 0.8);
-    light.position.set(-50, 100, 50);
+    // Ambient light
+    this.threeScene.add(new _three2.default.AmbientLight(0x666666));
+
+    // Directional light
+    var light = new _three2.default.DirectionalLight(0xffffff, 1);
+    light.position.set(-30, 40, 20);
+
+    light.castShadow = true;
+    light.shadow.mapSize = new _three2.default.Vector2(5000, 5000);
+    var size = 50;
+    light.shadow.camera.left = -size;
+    light.shadow.camera.right = size;
+    light.shadow.camera.top = -size;
+    light.shadow.camera.bottom = size;
+    light.shadow.camera.near = 10;
+    light.shadow.camera.far = 100;
+
     this.threeScene.add(light);
 
     // light helper
     if (_2.default.DEBUG) {
       this.threeScene.add(new _three2.default.DirectionalLightHelper(light, 0));
+      this.threeScene.add(new _three2.default.CameraHelper(light.shadow.camera));
     }
 
     // axes

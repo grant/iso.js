@@ -24,14 +24,14 @@
     <script src="../build/browser-iso.js"></script>
     <script>
         // Turn debug mode on
-        Iso.DEBUG = false;
+        Iso.DEBUG = true;
 
         var container = document.getElementById('container');
         container.setAttribute('style', 'width:100%;height:100%;');
 
         var world = new Iso(container);
         var scene = new Iso.Scene();
-        
+
         var cube = new Iso.Cube(1, 2, 3);
         cube.position({
             x: 1,
@@ -41,7 +41,7 @@
 //        scene.add(cube);
 
 //        scene.add(new Iso.Cube(13, 22, 3));
-        for (var i = 0; i < 1000; ++i) {
+        for (var i = 0; i < 100; ++i) {
             var size = Math.random() * 10;
             var cube = new Iso.Cube(size, size, size);
             var r = -40;

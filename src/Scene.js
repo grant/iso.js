@@ -5,16 +5,33 @@ export default class Scene {
   threeScene = new THREE.Scene();
 
   constructor() {
-    this.threeScene.add(new THREE.AmbientLight(0x333333));
+    // Fog
+    this.threeScene.fog = new THREE.FogExp2(0x000000, 5);
 
-    // light
-    var light = new THREE.DirectionalLight(0xffffff, 0.8);
-    light.position.set(-50, 100, 50);
+    // Ambient light
+    this.threeScene.add(new THREE.AmbientLight(0x666666));
+
+    // Directional light
+    var light = new THREE.DirectionalLight(0xffffff, 1);
+    light.position.set(-30, 40, 20);
+
+    light.castShadow = true;
+    light.shadow.mapSize = new THREE.Vector2(5000, 5000);
+    var size = 50;
+    light.shadow.camera.left = -size;
+    light.shadow.camera.right = size;
+    light.shadow.camera.top = -size;
+    light.shadow.camera.bottom = size;
+    light.shadow.camera.near = 10;
+    light.shadow.camera.far = 100;
+
     this.threeScene.add(light);
+
 
     // light helper
     if (Iso.DEBUG) {
       this.threeScene.add(new THREE.DirectionalLightHelper(light, 0));
+      this.threeScene.add(new THREE.CameraHelper(light.shadow.camera));
     }
 
     // axes

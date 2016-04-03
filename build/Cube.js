@@ -31,6 +31,10 @@ var Cube = function () {
 
     this.xyz = { x: 0, y: 0, z: 0 };
     this.threeCube = new THREE.Mesh(geometry, material);
+
+    // shadow
+    this.threeCube.castShadow = true;
+    this.threeCube.receiveShadow = true;
   }
 
   _createClass(Cube, [{

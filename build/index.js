@@ -28,6 +28,10 @@ var _OrbitControls = require('./OrbitControls');
 
 var _OrbitControls2 = _interopRequireDefault(_OrbitControls);
 
+var _DebugStats = require('./DebugStats');
+
+var _DebugStats2 = _interopRequireDefault(_DebugStats);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -62,6 +66,12 @@ var Iso = function () {
       }, this.container);
       camera.threeCamera.lookAt(scene.threeScene.position);
 
+      // Render Debug Stats
+      if (Iso.DEBUG) {
+        var stats = new _DebugStats2.default(this.container);
+        stats.render();
+      }
+
       // Render
       _Renderer2.default.render(scene, camera, this.container);
 
@@ -70,8 +80,8 @@ var Iso = function () {
       controls.addEventListener('change', function () {
         _Renderer2.default.render(scene, camera, _this.container);
       });
-      controls.enableZoom = false;
-      controls.enablePan = false;
+      controls.enableZoom = true;
+      controls.enablePan = true;
       controls.maxPolarAngle = Math.PI / 2;
     }
   }]);
@@ -86,6 +96,7 @@ Iso.DEBUG = false;
 Iso.Camera = _Camera2.default;
 Iso.Cube = _Cube2.default;
 Iso.Scene = _Scene2.default;
+Iso.Renderer = _Renderer2.default;
 exports.default = Iso;
 window.Iso = Iso;
 

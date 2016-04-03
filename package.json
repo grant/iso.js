@@ -43,6 +43,7 @@
     "browserify-shim": "^3.2.2",
     "flow-bin": "^0.22.1",
     "immutable": "^3.7.6",
+    "stats.js": "^1.0.0",
     "three": "^0.75.0",
     "watchify": "^3.7.0"
   },

@@ -32,7 +32,7 @@ function Camera(options, container) {
 };
 
 exports.default = Camera;
-},{"three":7}],2:[function(require,module,exports){
+},{"three":9}],2:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -66,6 +66,10 @@ var Cube = function () {
 
     this.xyz = { x: 0, y: 0, z: 0 };
     this.threeCube = new THREE.Mesh(geometry, material);
+
+    // shadow
+    this.threeCube.castShadow = true;
+    this.threeCube.receiveShadow = true;
   }
 
   _createClass(Cube, [{
@@ -81,6 +85,135 @@ var Cube = function () {
 
 exports.default = Cube;
 },{}],3:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _stats = require('stats.js');
+
+var _stats2 = _interopRequireDefault(_stats);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var DebugStats = function () {
+  function DebugStats(container) {
+    _classCallCheck(this, DebugStats);
+
+    this.stats = new _stats2.default();
+
+    if (!(container instanceof HTMLElement)) {
+      throw new TypeError('Value of argument "container" violates contract.\n\nExpected:\nHTMLElement\n\nGot:\n' + _inspect(container));
+    }
+
+    this.container = container;
+    this.stats.setMode(0); // 0: fps, 1: ms
+    this.stats.domElement.style.position = 'absolute';
+    this.stats.domElement.style.top = '0px';
+  }
+
+  _createClass(DebugStats, [{
+    key: 'render',
+    value: function render() {
+      var _this = this;
+
+      this.container.appendChild(this.stats.domElement);
+
+      var update = function update() {
+        _this.stats.begin();
+        // monitored code goes here
+        _this.stats.end();
+        requestAnimationFrame(update);
+      };
+      requestAnimationFrame(update);
+    }
+  }]);
+
+  return DebugStats;
+}();
+
+exports.default = DebugStats;
+
+function _inspect(input, depth) {
+  var maxDepth = 4;
+  var maxKeys = 15;
+
+  if (depth === undefined) {
+    depth = 0;
+  }
+
+  depth += 1;
+
+  if (input === null) {
+    return 'null';
+  } else if (input === undefined) {
+    return 'void';
+  } else if (typeof input === 'string' || typeof input === 'number' || typeof input === 'boolean') {
+    return typeof input === 'undefined' ? 'undefined' : _typeof(input);
+  } else if (Array.isArray(input)) {
+    if (input.length > 0) {
+      var _ret = function () {
+        if (depth > maxDepth) return {
+            v: '[...]'
+          };
+
+        var first = _inspect(input[0], depth);
+
+        if (input.every(function (item) {
+          return _inspect(item, depth) === first;
+        })) {
+          return {
+            v: first.trim() + '[]'
+          };
+        } else {
+          return {
+            v: '[' + input.slice(0, maxKeys).map(function (item) {
+              return _inspect(item, depth);
+            }).join(', ') + (input.length >= maxKeys ? ', ...' : '') + ']'
+          };
+        }
+      }();
+
+      if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+    } else {
+      return 'Array';
+    }
+  } else {
+    var keys = Object.keys(input);
+
+    if (!keys.length) {
+      if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
+        return input.constructor.name;
+      } else {
+        return 'Object';
+      }
+    }
+
+    if (depth > maxDepth) return '{...}';
+    var indent = '  '.repeat(depth - 1);
+    var entries = keys.slice(0, maxKeys).map(function (key) {
+      return (/^([A-Z_$][A-Z0-9_$]*)$/i.test(key) ? key : JSON.stringify(key)) + ': ' + _inspect(input[key], depth) + ';';
+    }).join('\n  ' + indent);
+
+    if (keys.length >= maxKeys) {
+      entries += '\n  ' + indent + '...';
+    }
+
+    if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
+      return input.constructor.name + ' {\n  ' + indent + entries + '\n' + indent + '}';
+    } else {
+      return '{\n  ' + indent + entries + '\n' + indent + '}';
+    }
+  }
+}
+},{"stats.js":8}],4:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1049,7 +1182,7 @@ Object.defineProperties(THREE.OrbitControls.prototype, {
 
 });
 exports.default = OrbitControl;
-},{"three":7}],4:[function(require,module,exports){
+},{"three":9}],5:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1092,8 +1225,22 @@ var Renderer = function () {
         throw new TypeError('Value of argument "camera" violates contract.\n\nExpected:\nCamera\n\nGot:\n' + _inspect(camera));
       }
 
+      if (!(container instanceof HTMLElement)) {
+        throw new TypeError('Value of argument "container" violates contract.\n\nExpected:\nHTMLElement\n\nGot:\n' + _inspect(container));
+      }
+
+      // Setup shadows
+      Renderer.threeRenderer.shadowMap.enabled = Renderer.SHADOWS_ENABLED;
+      Renderer.threeRenderer.shadowMap.soft = true;
+      Renderer.threeRenderer.shadowMap.type = _three2.default.PCFSoftShadowMap;
+
+      // Update container size
       Renderer.threeRenderer.setSize(container.offsetWidth, container.offsetHeight);
+
+      // Add rendering to container
       container.appendChild(Renderer.renderDomElement);
+
+      // Render
       Renderer.threeRenderer.render(scene.threeScene, camera.threeCamera);
     }
   }, {
@@ -1106,6 +1253,7 @@ var Renderer = function () {
   return Renderer;
 }();
 
+Renderer.SHADOWS_ENABLED = false;
 Renderer.threeRenderer = new _three2.default.WebGLRenderer({ antialias: true });
 exports.default = Renderer;
 
@@ -1181,7 +1329,7 @@ function _inspect(input, depth) {
     }
   }
 }
-},{"./Camera":1,"./Scene":5,"three":7}],5:[function(require,module,exports){
+},{"./Camera":1,"./Scene":6,"three":9}],6:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1208,16 +1356,32 @@ var Scene = function () {
 
     this.threeScene = new _three2.default.Scene();
 
-    this.threeScene.add(new _three2.default.AmbientLight(0x333333));
+    // Fog
+    this.threeScene.fog = new _three2.default.FogExp2(0x000000, 5);
 
-    // light
-    var light = new _three2.default.DirectionalLight(0xffffff, 0.8);
-    light.position.set(-50, 100, 50);
+    // Ambient light
+    this.threeScene.add(new _three2.default.AmbientLight(0x666666));
+
+    // Directional light
+    var light = new _three2.default.DirectionalLight(0xffffff, 1);
+    light.position.set(-30, 40, 20);
+
+    light.castShadow = true;
+    light.shadow.mapSize = new _three2.default.Vector2(5000, 5000);
+    var size = 50;
+    light.shadow.camera.left = -size;
+    light.shadow.camera.right = size;
+    light.shadow.camera.top = -size;
+    light.shadow.camera.bottom = size;
+    light.shadow.camera.near = 10;
+    light.shadow.camera.far = 100;
+
     this.threeScene.add(light);
 
     // light helper
     if (_2.default.DEBUG) {
       this.threeScene.add(new _three2.default.DirectionalLightHelper(light, 0));
+      this.threeScene.add(new _three2.default.CameraHelper(light.shadow.camera));
     }
 
     // axes
@@ -1262,7 +1426,7 @@ var Scene = function () {
 }();
 
 exports.default = Scene;
-},{"./":6,"three":7}],6:[function(require,module,exports){
+},{"./":7,"three":9}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -1292,6 +1456,10 @@ var _Renderer2 = _interopRequireDefault(_Renderer);
 var _OrbitControls = require('./OrbitControls');
 
 var _OrbitControls2 = _interopRequireDefault(_OrbitControls);
+
+var _DebugStats = require('./DebugStats');
+
+var _DebugStats2 = _interopRequireDefault(_DebugStats);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -1327,6 +1495,12 @@ var Iso = function () {
       }, this.container);
       camera.threeCamera.lookAt(scene.threeScene.position);
 
+      // Render Debug Stats
+      if (Iso.DEBUG) {
+        var stats = new _DebugStats2.default(this.container);
+        stats.render();
+      }
+
       // Render
       _Renderer2.default.render(scene, camera, this.container);
 
@@ -1335,8 +1509,8 @@ var Iso = function () {
       controls.addEventListener('change', function () {
         _Renderer2.default.render(scene, camera, _this.container);
       });
-      controls.enableZoom = false;
-      controls.enablePan = false;
+      controls.enableZoom = true;
+      controls.enablePan = true;
       controls.maxPolarAngle = Math.PI / 2;
     }
   }]);
@@ -1351,6 +1525,7 @@ Iso.DEBUG = false;
 Iso.Camera = _Camera2.default;
 Iso.Cube = _Cube2.default;
 Iso.Scene = _Scene2.default;
+Iso.Renderer = _Renderer2.default;
 exports.default = Iso;
 window.Iso = Iso;
 
@@ -1426,7 +1601,157 @@ function _inspect(input, depth) {
     }
   }
 }
-},{"./Camera":1,"./Cube":2,"./OrbitControls":3,"./Renderer":4,"./Scene":5}],7:[function(require,module,exports){
+},{"./Camera":1,"./Cube":2,"./DebugStats":3,"./OrbitControls":4,"./Renderer":5,"./Scene":6}],8:[function(require,module,exports){
+/**
+ * @author mrdoob / http://mrdoob.com/
+ */
+
+var Stats = function () {
+
+	var startTime = Date.now(), prevTime = startTime;
+	var ms = 0, msMin = Infinity, msMax = 0;
+	var fps = 0, fpsMin = Infinity, fpsMax = 0;
+	var frames = 0, mode = 0;
+
+	var container = document.createElement( 'div' );
+	container.id = 'stats';
+	container.addEventListener( 'mousedown', function ( event ) { event.preventDefault(); setMode( ++ mode % 2 ) }, false );
+	container.style.cssText = 'width:80px;opacity:0.9;cursor:pointer';
+
+	var fpsDiv = document.createElement( 'div' );
+	fpsDiv.id = 'fps';
+	fpsDiv.style.cssText = 'padding:0 0 3px 3px;text-align:left;background-color:#002';
+	container.appendChild( fpsDiv );
+
+	var fpsText = document.createElement( 'div' );
+	fpsText.id = 'fpsText';
+	fpsText.style.cssText = 'color:#0ff;font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px';
+	fpsText.innerHTML = 'FPS';
+	fpsDiv.appendChild( fpsText );
+
+	var fpsGraph = document.createElement( 'div' );
+	fpsGraph.id = 'fpsGraph';
+	fpsGraph.style.cssText = 'position:relative;width:74px;height:30px;background-color:#0ff';
+	fpsDiv.appendChild( fpsGraph );
+
+	while ( fpsGraph.children.length < 74 ) {
+
+		var bar = document.createElement( 'span' );
+		bar.style.cssText = 'width:1px;height:30px;float:left;background-color:#113';
+		fpsGraph.appendChild( bar );
+
+	}
+
+	var msDiv = document.createElement( 'div' );
+	msDiv.id = 'ms';
+	msDiv.style.cssText = 'padding:0 0 3px 3px;text-align:left;background-color:#020;display:none';
+	container.appendChild( msDiv );
+
+	var msText = document.createElement( 'div' );
+	msText.id = 'msText';
+	msText.style.cssText = 'color:#0f0;font-family:Helvetica,Arial,sans-serif;font-size:9px;font-weight:bold;line-height:15px';
+	msText.innerHTML = 'MS';
+	msDiv.appendChild( msText );
+
+	var msGraph = document.createElement( 'div' );
+	msGraph.id = 'msGraph';
+	msGraph.style.cssText = 'position:relative;width:74px;height:30px;background-color:#0f0';
+	msDiv.appendChild( msGraph );
+
+	while ( msGraph.children.length < 74 ) {
+
+		var bar = document.createElement( 'span' );
+		bar.style.cssText = 'width:1px;height:30px;float:left;background-color:#131';
+		msGraph.appendChild( bar );
+
+	}
+
+	var setMode = function ( value ) {
+
+		mode = value;
+
+		switch ( mode ) {
+
+			case 0:
+				fpsDiv.style.display = 'block';
+				msDiv.style.display = 'none';
+				break;
+			case 1:
+				fpsDiv.style.display = 'none';
+				msDiv.style.display = 'block';
+				break;
+		}
+
+	};
+
+	var updateGraph = function ( dom, value ) {
+
+		var child = dom.appendChild( dom.firstChild );
+		child.style.height = value + 'px';
+
+	};
+
+	return {
+
+		REVISION: 12,
+
+		domElement: container,
+
+		setMode: setMode,
+
+		begin: function () {
+
+			startTime = Date.now();
+
+		},
+
+		end: function () {
+
+			var time = Date.now();
+
+			ms = time - startTime;
+			msMin = Math.min( msMin, ms );
+			msMax = Math.max( msMax, ms );
+
+			msText.textContent = ms + ' MS (' + msMin + '-' + msMax + ')';
+			updateGraph( msGraph, Math.min( 30, 30 - ( ms / 200 ) * 30 ) );
+
+			frames ++;
+
+			if ( time > prevTime + 1000 ) {
+
+				fps = Math.round( ( frames * 1000 ) / ( time - prevTime ) );
+				fpsMin = Math.min( fpsMin, fps );
+				fpsMax = Math.max( fpsMax, fps );
+
+				fpsText.textContent = fps + ' FPS (' + fpsMin + '-' + fpsMax + ')';
+				updateGraph( fpsGraph, Math.min( 30, 30 - ( fps / 100 ) * 30 ) );
+
+				prevTime = time;
+				frames = 0;
+
+			}
+
+			return time;
+
+		},
+
+		update: function () {
+
+			startTime = this.end();
+
+		}
+
+	}
+
+};
+
+if ( typeof module === 'object' ) {
+
+	module.exports = Stats;
+
+}
+},{}],9:[function(require,module,exports){
 (function (global){
 (function browserifyShim(module, exports, define, browserify_shim__define__module__export__) {
 var self = self || {};// File:src/Three.js
@@ -42116,4 +42441,4 @@ if (typeof exports !== 'undefined') {
 }).call(global, undefined, undefined, undefined, function defineExport(ex) { module.exports = ex; });
 
 }).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
-},{}]},{},[6]);
+},{}]},{},[7]);

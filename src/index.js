@@ -3,12 +3,14 @@ import Scene from './Scene';
 import Cube from './Cube';
 import Renderer from './Renderer';
 import OrbitControls from './OrbitControls';
+import DebugStats from './DebugStats'
 
 export default class Iso {
   static DEBUG = false;
   static Camera = Camera;
   static Cube = Cube;
   static Scene = Scene;
+  static Renderer = Renderer;
 
   /**
    * Create a new Iso world.
@@ -27,6 +29,12 @@ export default class Iso {
     }, this.container);
     camera.threeCamera.lookAt(scene.threeScene.position);
 
+    // Render Debug Stats
+    if (Iso.DEBUG) {
+      var stats = new DebugStats(this.container);
+      stats.render();
+    }
+
     // Render
     Renderer.render(scene, camera, this.container);
 
@@ -35,8 +43,8 @@ export default class Iso {
     controls.addEventListener('change', () => {
       Renderer.render(scene, camera, this.container);
     });
-    controls.enableZoom = false;
-    controls.enablePan = false;
+    controls.enableZoom = true;
+    controls.enablePan = true;
     controls.maxPolarAngle = Math.PI / 2;
   }
 }

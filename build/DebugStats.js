@@ -8,69 +8,51 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _three = require('three');
+var _stats = require('stats.js');
 
-var _three2 = _interopRequireDefault(_three);
-
-var _Scene = require('./Scene');
-
-var _Scene2 = _interopRequireDefault(_Scene);
-
-var _Camera = require('./Camera');
-
-var _Camera2 = _interopRequireDefault(_Camera);
+var _stats2 = _interopRequireDefault(_stats);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Renderer = function () {
-  function Renderer() {
-    _classCallCheck(this, Renderer);
+var DebugStats = function () {
+  function DebugStats(container) {
+    _classCallCheck(this, DebugStats);
+
+    this.stats = new _stats2.default();
+
+    if (!(container instanceof HTMLElement)) {
+      throw new TypeError('Value of argument "container" violates contract.\n\nExpected:\nHTMLElement\n\nGot:\n' + _inspect(container));
+    }
+
+    this.container = container;
+    this.stats.setMode(0); // 0: fps, 1: ms
+    this.stats.domElement.style.position = 'absolute';
+    this.stats.domElement.style.top = '0px';
   }
 
-  _createClass(Renderer, null, [{
+  _createClass(DebugStats, [{
     key: 'render',
-    value: function render(scene, camera, container) {
-      if (!(scene instanceof _Scene2.default)) {
-        throw new TypeError('Value of argument "scene" violates contract.\n\nExpected:\nScene\n\nGot:\n' + _inspect(scene));
-      }
+    value: function render() {
+      var _this = this;
 
-      if (!(camera instanceof _Camera2.default)) {
-        throw new TypeError('Value of argument "camera" violates contract.\n\nExpected:\nCamera\n\nGot:\n' + _inspect(camera));
-      }
+      this.container.appendChild(this.stats.domElement);
 
-      if (!(container instanceof HTMLElement)) {
-        throw new TypeError('Value of argument "container" violates contract.\n\nExpected:\nHTMLElement\n\nGot:\n' + _inspect(container));
-      }
-
-      // Setup shadows
-      Renderer.threeRenderer.shadowMap.enabled = Renderer.SHADOWS_ENABLED;
-      Renderer.threeRenderer.shadowMap.soft = true;
-      Renderer.threeRenderer.shadowMap.type = _three2.default.PCFSoftShadowMap;
-
-      // Update container size
-      Renderer.threeRenderer.setSize(container.offsetWidth, container.offsetHeight);
-
-      // Add rendering to container
-      container.appendChild(Renderer.renderDomElement);
-
-      // Render
-      Renderer.threeRenderer.render(scene.threeScene, camera.threeCamera);
-    }
-  }, {
-    key: 'renderDomElement',
-    get: function get() {
-      return Renderer.threeRenderer.domElement;
+      var update = function update() {
+        _this.stats.begin();
+        // monitored code goes here
+        _this.stats.end();
+        requestAnimationFrame(update);
+      };
+      requestAnimationFrame(update);
     }
   }]);
 
-  return Renderer;
+  return DebugStats;
 }();
 
-Renderer.SHADOWS_ENABLED = false;
-Renderer.threeRenderer = new _three2.default.WebGLRenderer({ antialias: true });
-exports.default = Renderer;
+exports.default = DebugStats;
 
 function _inspect(input, depth) {
   var maxDepth = 4;
