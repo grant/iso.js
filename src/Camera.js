@@ -10,7 +10,14 @@ export default class Camera {
     this.threeCamera = new THREE.OrthographicCamera(-d * aspect, d * aspect, d, -d, 1, 1000);
 
     // Setup direction
+    this.zoom(options.zoom);
     this.threeCamera.rotation.order = 'YXZ';
-    this.threeCamera.position.set(20, 20, 20);
+    this.threeCamera.position.set(-50, 50, -50);
+  }
+
+  zoom(zoomLevel:number):Camera {
+    this.threeCamera.zoom = zoomLevel;
+    this.threeCamera.updateProjectionMatrix();
+    return this;
   }
 }

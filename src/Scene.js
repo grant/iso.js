@@ -9,14 +9,14 @@ export default class Scene {
     this.threeScene.fog = new THREE.FogExp2(0x000000, 5);
 
     // Ambient light
-    this.threeScene.add(new THREE.AmbientLight(0x666666));
+    this.threeScene.add(new THREE.AmbientLight(0xaaaaaa));
 
     // Directional light
     var light = new THREE.DirectionalLight(0xffffff, 1);
     light.position.set(-30, 40, 20);
 
     light.castShadow = true;
-    light.shadow.mapSize = new THREE.Vector2(5000, 5000);
+    light.shadow.mapSize = new THREE.Vector2(50, 50);
     var size = 50;
     light.shadow.camera.left = -size;
     light.shadow.camera.right = size;
@@ -65,7 +65,8 @@ export default class Scene {
     //this.threeScene.add(mesh);
   }
 
-  add(cube) {
+  add(cube):Scene {
     this.threeScene.add(cube.threeCube)
+    return this;
   }
 }

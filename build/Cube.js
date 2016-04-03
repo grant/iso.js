@@ -18,9 +18,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var Cube = function () {
   function Cube() {
-    var width = arguments.length <= 0 || arguments[0] === undefined ? 1 : arguments[0];
-    var height = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
-    var depth = arguments.length <= 2 || arguments[2] === undefined ? 1 : arguments[2];
+    var x = arguments.length <= 0 || arguments[0] === undefined ? 1 : arguments[0];
+    var y = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
+    var z = arguments.length <= 2 || arguments[2] === undefined ? 1 : arguments[2];
 
     _classCallCheck(this, Cube);
 
@@ -28,12 +28,10 @@ var Cube = function () {
     this.xyz = { x: 0, y: 0, z: 0 };
     this.cubeColor = new _three2.default.Color('rgb(10, 238, 223)');
 
-    this.width = width;
-    this.height = height;
-    this.depth = depth;
+    this.size = { x: x, y: y, z: z };
 
     // geometry
-    var geometry = new _three2.default.BoxGeometry(width, height, depth);
+    var geometry = new _three2.default.BoxGeometry(x, y, z);
 
     // material
     var material = new _three2.default.MeshLambertMaterial({
@@ -41,29 +39,71 @@ var Cube = function () {
     });
 
     this.threeCube = new _three2.default.Mesh(geometry, material);
+    this.position(this.xyz);
 
     // shadow
     this.threeCube.castShadow = true;
     this.threeCube.receiveShadow = true;
   }
 
+  // Either pass {x, y, z} or (x, y, z) tuple
+
+
   _createClass(Cube, [{
     key: 'position',
-    value: function position(xyz) {
+    value: function position(x, y, z) {
+      function _ref(_id) {
+        if (!(_id instanceof Cube)) {
+          throw new TypeError('Function return value violates contract.\n\nExpected:\nCube\n\nGot:\n' + _inspect(_id));
+        }
+
+        return _id;
+      }
+
+      var xyz = arguments.length === 3 ? { x: x, y: y, z: z } : x;
       this.xyz = xyz;
-      this.threeCube.position.set(xyz.x, xyz.y, xyz.z);
-      return this;
+
+      // Un-center the cube
+      this.threeCube.position.set(xyz.x + this.size.x / 2, xyz.y + this.size.y / 2, xyz.z + this.size.z / 2);
+      return _ref(this);
     }
   }, {
     key: 'color',
     value: function color(_color) {
+      function _ref2(_id2) {
+        if (!(_id2 instanceof Cube)) {
+          throw new TypeError('Function return value violates contract.\n\nExpected:\nCube\n\nGot:\n' + _inspect(_id2));
+        }
+
+        return _id2;
+      }
+
       if (!(_color instanceof _three2.default.Color)) {
         throw new TypeError('Value of argument "color" violates contract.\n\nExpected:\nTHREE.Color\n\nGot:\n' + _inspect(_color));
       }
 
       this.cubeColor = _color;
       this.threeCube.material.color = this.cubeColor;
-      return this;
+      return _ref2(this);
+    }
+  }, {
+    key: 'opacity',
+    value: function opacity(_opacity) {
+      function _ref3(_id3) {
+        if (!(_id3 instanceof Cube)) {
+          throw new TypeError('Function return value violates contract.\n\nExpected:\nCube\n\nGot:\n' + _inspect(_id3));
+        }
+
+        return _id3;
+      }
+
+      if (!(typeof _opacity === 'number')) {
+        throw new TypeError('Value of argument "opacity" violates contract.\n\nExpected:\nnumber\n\nGot:\n' + _inspect(_opacity));
+      }
+
+      this.threeCube.material.transparent = true;
+      this.threeCube.material.opacity = _opacity;
+      return _ref3(this);
     }
   }]);
 

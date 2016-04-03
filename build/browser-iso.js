@@ -5,6 +5,10 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 var _three = require('three');
 
 var _three2 = _interopRequireDefault(_three);
@@ -13,25 +17,124 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Camera =
+var Camera = function () {
 
-// TODO add more camera options
-function Camera(options, container) {
-  _classCallCheck(this, Camera);
+  // TODO add more camera options
 
-  this.threeCamera = null;
+  function Camera(options, container) {
+    _classCallCheck(this, Camera);
 
-  // Create camera
-  var aspect = container.offsetWidth / container.offsetHeight;
-  var d = 20;
-  this.threeCamera = new _three2.default.OrthographicCamera(-d * aspect, d * aspect, d, -d, 1, 1000);
+    this.threeCamera = null;
 
-  // Setup direction
-  this.threeCamera.rotation.order = 'YXZ';
-  this.threeCamera.position.set(20, 20, 20);
-};
+    // Create camera
+    var aspect = container.offsetWidth / container.offsetHeight;
+    var d = 20;
+    this.threeCamera = new _three2.default.OrthographicCamera(-d * aspect, d * aspect, d, -d, 1, 1000);
+
+    // Setup direction
+    this.zoom(options.zoom);
+    this.threeCamera.rotation.order = 'YXZ';
+    this.threeCamera.position.set(-50, 50, -50);
+  }
+
+  _createClass(Camera, [{
+    key: 'zoom',
+    value: function zoom(zoomLevel) {
+      function _ref(_id) {
+        if (!(_id instanceof Camera)) {
+          throw new TypeError('Function return value violates contract.\n\nExpected:\nCamera\n\nGot:\n' + _inspect(_id));
+        }
+
+        return _id;
+      }
+
+      if (!(typeof zoomLevel === 'number')) {
+        throw new TypeError('Value of argument "zoomLevel" violates contract.\n\nExpected:\nnumber\n\nGot:\n' + _inspect(zoomLevel));
+      }
+
+      this.threeCamera.zoom = zoomLevel;
+      this.threeCamera.updateProjectionMatrix();
+      return _ref(this);
+    }
+  }]);
+
+  return Camera;
+}();
 
 exports.default = Camera;
+
+function _inspect(input, depth) {
+  var maxDepth = 4;
+  var maxKeys = 15;
+
+  if (depth === undefined) {
+    depth = 0;
+  }
+
+  depth += 1;
+
+  if (input === null) {
+    return 'null';
+  } else if (input === undefined) {
+    return 'void';
+  } else if (typeof input === 'string' || typeof input === 'number' || typeof input === 'boolean') {
+    return typeof input === 'undefined' ? 'undefined' : _typeof(input);
+  } else if (Array.isArray(input)) {
+    if (input.length > 0) {
+      var _ret = function () {
+        if (depth > maxDepth) return {
+            v: '[...]'
+          };
+
+        var first = _inspect(input[0], depth);
+
+        if (input.every(function (item) {
+          return _inspect(item, depth) === first;
+        })) {
+          return {
+            v: first.trim() + '[]'
+          };
+        } else {
+          return {
+            v: '[' + input.slice(0, maxKeys).map(function (item) {
+              return _inspect(item, depth);
+            }).join(', ') + (input.length >= maxKeys ? ', ...' : '') + ']'
+          };
+        }
+      }();
+
+      if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+    } else {
+      return 'Array';
+    }
+  } else {
+    var keys = Object.keys(input);
+
+    if (!keys.length) {
+      if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
+        return input.constructor.name;
+      } else {
+        return 'Object';
+      }
+    }
+
+    if (depth > maxDepth) return '{...}';
+    var indent = '  '.repeat(depth - 1);
+    var entries = keys.slice(0, maxKeys).map(function (key) {
+      return (/^([A-Z_$][A-Z0-9_$]*)$/i.test(key) ? key : JSON.stringify(key)) + ': ' + _inspect(input[key], depth) + ';';
+    }).join('\n  ' + indent);
+
+    if (keys.length >= maxKeys) {
+      entries += '\n  ' + indent + '...';
+    }
+
+    if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
+      return input.constructor.name + ' {\n  ' + indent + entries + '\n' + indent + '}';
+    } else {
+      return '{\n  ' + indent + entries + '\n' + indent + '}';
+    }
+  }
+}
 },{"three":9}],2:[function(require,module,exports){
 'use strict';
 
@@ -53,9 +156,9 @@ function _classCallCheck(instance, Constructor) { if (!(instance instanceof Cons
 
 var Cube = function () {
   function Cube() {
-    var width = arguments.length <= 0 || arguments[0] === undefined ? 1 : arguments[0];
-    var height = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
-    var depth = arguments.length <= 2 || arguments[2] === undefined ? 1 : arguments[2];
+    var x = arguments.length <= 0 || arguments[0] === undefined ? 1 : arguments[0];
+    var y = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
+    var z = arguments.length <= 2 || arguments[2] === undefined ? 1 : arguments[2];
 
     _classCallCheck(this, Cube);
 
@@ -63,12 +166,10 @@ var Cube = function () {
     this.xyz = { x: 0, y: 0, z: 0 };
     this.cubeColor = new _three2.default.Color('rgb(10, 238, 223)');
 
-    this.width = width;
-    this.height = height;
-    this.depth = depth;
+    this.size = { x: x, y: y, z: z };
 
     // geometry
-    var geometry = new _three2.default.BoxGeometry(width, height, depth);
+    var geometry = new _three2.default.BoxGeometry(x, y, z);
 
     // material
     var material = new _three2.default.MeshLambertMaterial({
@@ -76,29 +177,71 @@ var Cube = function () {
     });
 
     this.threeCube = new _three2.default.Mesh(geometry, material);
+    this.position(this.xyz);
 
     // shadow
     this.threeCube.castShadow = true;
     this.threeCube.receiveShadow = true;
   }
 
+  // Either pass {x, y, z} or (x, y, z) tuple
+
+
   _createClass(Cube, [{
     key: 'position',
-    value: function position(xyz) {
+    value: function position(x, y, z) {
+      function _ref(_id) {
+        if (!(_id instanceof Cube)) {
+          throw new TypeError('Function return value violates contract.\n\nExpected:\nCube\n\nGot:\n' + _inspect(_id));
+        }
+
+        return _id;
+      }
+
+      var xyz = arguments.length === 3 ? { x: x, y: y, z: z } : x;
       this.xyz = xyz;
-      this.threeCube.position.set(xyz.x, xyz.y, xyz.z);
-      return this;
+
+      // Un-center the cube
+      this.threeCube.position.set(xyz.x + this.size.x / 2, xyz.y + this.size.y / 2, xyz.z + this.size.z / 2);
+      return _ref(this);
     }
   }, {
     key: 'color',
     value: function color(_color) {
+      function _ref2(_id2) {
+        if (!(_id2 instanceof Cube)) {
+          throw new TypeError('Function return value violates contract.\n\nExpected:\nCube\n\nGot:\n' + _inspect(_id2));
+        }
+
+        return _id2;
+      }
+
       if (!(_color instanceof _three2.default.Color)) {
         throw new TypeError('Value of argument "color" violates contract.\n\nExpected:\nTHREE.Color\n\nGot:\n' + _inspect(_color));
       }
 
       this.cubeColor = _color;
       this.threeCube.material.color = this.cubeColor;
-      return this;
+      return _ref2(this);
+    }
+  }, {
+    key: 'opacity',
+    value: function opacity(_opacity) {
+      function _ref3(_id3) {
+        if (!(_id3 instanceof Cube)) {
+          throw new TypeError('Function return value violates contract.\n\nExpected:\nCube\n\nGot:\n' + _inspect(_id3));
+        }
+
+        return _id3;
+      }
+
+      if (!(typeof _opacity === 'number')) {
+        throw new TypeError('Value of argument "opacity" violates contract.\n\nExpected:\nnumber\n\nGot:\n' + _inspect(_opacity));
+      }
+
+      this.threeCube.material.transparent = true;
+      this.threeCube.material.opacity = _opacity;
+      return _ref3(this);
     }
   }]);
 
@@ -376,8 +519,8 @@ var Iso = function () {
       // Setup camera
       var camera = new Iso.Camera({
         x: 10,
-        y: 10,
-        zoom: 10
+        z: 10,
+        zoom: 6
       }, this.container);
       camera.threeCamera.lookAt(scene.threeScene.position);
 
@@ -1528,8 +1671,11 @@ var Renderer = function () {
   return Renderer;
 }();
 
-Renderer.SHADOWS_ENABLED = false;
-Renderer.threeRenderer = new _three2.default.WebGLRenderer({ antialias: true });
+Renderer.SHADOWS_ENABLED = true;
+Renderer.threeRenderer = new _three2.default.WebGLRenderer({
+  antialias: true,
+  alpha: true
+});
 exports.default = Renderer;
 
 function _inspect(input, depth) {
@@ -1611,6 +1757,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol ? "symbol" : typeof obj; };
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 var _three = require('three');
@@ -1635,14 +1783,14 @@ var Scene = function () {
     this.threeScene.fog = new _three2.default.FogExp2(0x000000, 5);
 
     // Ambient light
-    this.threeScene.add(new _three2.default.AmbientLight(0x666666));
+    this.threeScene.add(new _three2.default.AmbientLight(0xaaaaaa));
 
     // Directional light
     var light = new _three2.default.DirectionalLight(0xffffff, 1);
     light.position.set(-30, 40, 20);
 
     light.castShadow = true;
-    light.shadow.mapSize = new _three2.default.Vector2(5000, 5000);
+    light.shadow.mapSize = new _three2.default.Vector2(50, 50);
     var size = 50;
     light.shadow.camera.left = -size;
     light.shadow.camera.right = size;
@@ -1693,7 +1841,16 @@ var Scene = function () {
   _createClass(Scene, [{
     key: 'add',
     value: function add(cube) {
+      function _ref(_id) {
+        if (!(_id instanceof Scene)) {
+          throw new TypeError('Function return value violates contract.\n\nExpected:\nScene\n\nGot:\n' + _inspect(_id));
+        }
+
+        return _id;
+      }
+
       this.threeScene.add(cube.threeCube);
+      return _ref(this);
     }
   }]);
 
@@ -1701,6 +1858,79 @@ var Scene = function () {
 }();
 
 exports.default = Scene;
+
+function _inspect(input, depth) {
+  var maxDepth = 4;
+  var maxKeys = 15;
+
+  if (depth === undefined) {
+    depth = 0;
+  }
+
+  depth += 1;
+
+  if (input === null) {
+    return 'null';
+  } else if (input === undefined) {
+    return 'void';
+  } else if (typeof input === 'string' || typeof input === 'number' || typeof input === 'boolean') {
+    return typeof input === 'undefined' ? 'undefined' : _typeof(input);
+  } else if (Array.isArray(input)) {
+    if (input.length > 0) {
+      var _ret = function () {
+        if (depth > maxDepth) return {
+            v: '[...]'
+          };
+
+        var first = _inspect(input[0], depth);
+
+        if (input.every(function (item) {
+          return _inspect(item, depth) === first;
+        })) {
+          return {
+            v: first.trim() + '[]'
+          };
+        } else {
+          return {
+            v: '[' + input.slice(0, maxKeys).map(function (item) {
+              return _inspect(item, depth);
+            }).join(', ') + (input.length >= maxKeys ? ', ...' : '') + ']'
+          };
+        }
+      }();
+
+      if ((typeof _ret === 'undefined' ? 'undefined' : _typeof(_ret)) === "object") return _ret.v;
+    } else {
+      return 'Array';
+    }
+  } else {
+    var keys = Object.keys(input);
+
+    if (!keys.length) {
+      if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
+        return input.constructor.name;
+      } else {
+        return 'Object';
+      }
+    }
+
+    if (depth > maxDepth) return '{...}';
+    var indent = '  '.repeat(depth - 1);
+    var entries = keys.slice(0, maxKeys).map(function (key) {
+      return (/^([A-Z_$][A-Z0-9_$]*)$/i.test(key) ? key : JSON.stringify(key)) + ': ' + _inspect(input[key], depth) + ';';
+    }).join('\n  ' + indent);
+
+    if (keys.length >= maxKeys) {
+      entries += '\n  ' + indent + '...';
+    }
+
+    if (input.constructor && input.constructor.name && input.constructor.name !== 'Object') {
+      return input.constructor.name + ' {\n  ' + indent + entries + '\n' + indent + '}';
+    } else {
+      return '{\n  ' + indent + entries + '\n' + indent + '}';
+    }
+  }
+}
 },{"./Iso":4,"three":9}],8:[function(require,module,exports){
 /**
  * @author mrdoob / http://mrdoob.com/

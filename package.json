@@ -1,5 +1,5 @@
 {
-  "name": "iso",
+  "name": "iso.js",
   "version": "0.0.1",
   "description": "A library for rendering isomorphic graphics",
   "main": "index.js",

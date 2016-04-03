@@ -3,8 +3,11 @@ import Scene from './Scene';
 import Camera from './Camera';
 
 export default class Renderer {
-  static SHADOWS_ENABLED = false;
-  static threeRenderer = new THREE.WebGLRenderer({antialias: true});
+  static SHADOWS_ENABLED = true;
+  static threeRenderer = new THREE.WebGLRenderer({
+    antialias: true,
+    alpha: true,
+  });
 
   static get renderDomElement() {
     return Renderer.threeRenderer.domElement;

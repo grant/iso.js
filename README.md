@@ -1,4 +1,4 @@
-# iso
+# iso.js
 ## A library for rendering isometric graphics
 
 An isometric project graphics library using three.js's orthographic camera
@@ -34,6 +34,7 @@ Run the file watcher and flow typechecker:
 ```
 npm install
 npm run watch
+npm run watch-browser
 ```
 
 This will generate `build/` files and log type mistakes to the console. 

@@ -68,8 +68,11 @@ var Renderer = function () {
   return Renderer;
 }();
 
-Renderer.SHADOWS_ENABLED = false;
-Renderer.threeRenderer = new _three2.default.WebGLRenderer({ antialias: true });
+Renderer.SHADOWS_ENABLED = true;
+Renderer.threeRenderer = new _three2.default.WebGLRenderer({
+  antialias: true,
+  alpha: true
+});
 exports.default = Renderer;
 
 function _inspect(input, depth) {

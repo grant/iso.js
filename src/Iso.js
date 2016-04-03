@@ -26,8 +26,8 @@ export default class Iso {
     // Setup camera
     var camera = new Iso.Camera({
       x: 10,
-      y: 10,
-      zoom: 10,
+      z: 10,
+      zoom: 6,
     }, this.container);
     camera.threeCamera.lookAt(scene.threeScene.position);
 
