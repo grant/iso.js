@@ -54,6 +54,7 @@ var Iso = function () {
         throw new TypeError('Value of argument "scene" violates contract.\n\nExpected:\nScene\n\nGot:\n' + _inspect(scene));
       }
 
+      // Setup camera
       var camera = new Iso.Camera({
         x: 10,
         y: 10,
@@ -61,8 +62,10 @@ var Iso = function () {
       }, this.container);
       camera.threeCamera.lookAt(scene.threeScene.position);
 
+      // Render
       _Renderer2.default.render(scene, camera, this.container);
 
+      // Enable Orbit Controls
       var controls = new _OrbitControls2.default(camera.threeCamera, _Renderer2.default.renderDomElement);
       controls.addEventListener('change', function () {
         _Renderer2.default.render(scene, camera, _this.container);

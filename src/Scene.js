@@ -3,12 +3,19 @@ import Iso from './';
 
 export default class Scene {
   threeScene = new THREE.Scene();
-  constructor() {
-    this.threeScene.add(new THREE.AmbientLight(0x444444));
 
-    var light = new THREE.PointLight(0xffffff, 0.8);
-    light.position.set(0, 50, 50);
+  constructor() {
+    this.threeScene.add(new THREE.AmbientLight(0x333333));
+
+    // light
+    var light = new THREE.DirectionalLight(0xffffff, 0.8);
+    light.position.set(-50, 100, 50);
     this.threeScene.add(light);
+
+    // light helper
+    if (Iso.DEBUG) {
+      this.threeScene.add(new THREE.DirectionalLightHelper(light, 0));
+    }
 
     // axes
     if (Iso.DEBUG) {
@@ -37,10 +44,11 @@ export default class Scene {
 
     // mesh
     let mesh = new THREE.Mesh(geometry, material);
-    this.threeScene.add(mesh);
+
+    //this.threeScene.add(mesh);
   }
 
-  add() {
-    // TODO
+  add(cube) {
+    this.threeScene.add(cube.threeCube)
   }
 }

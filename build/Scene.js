@@ -24,11 +24,17 @@ var Scene = function () {
 
     this.threeScene = new _three2.default.Scene();
 
-    this.threeScene.add(new _three2.default.AmbientLight(0x444444));
+    this.threeScene.add(new _three2.default.AmbientLight(0x333333));
 
-    var light = new _three2.default.PointLight(0xffffff, 0.8);
-    light.position.set(0, 50, 50);
+    // light
+    var light = new _three2.default.DirectionalLight(0xffffff, 0.8);
+    light.position.set(-50, 100, 50);
     this.threeScene.add(light);
+
+    // light helper
+    if (_2.default.DEBUG) {
+      this.threeScene.add(new _three2.default.DirectionalLightHelper(light, 0));
+    }
 
     // axes
     if (_2.default.DEBUG) {
@@ -57,13 +63,14 @@ var Scene = function () {
 
     // mesh
     var mesh = new _three2.default.Mesh(geometry, material);
-    this.threeScene.add(mesh);
+
+    //this.threeScene.add(mesh);
   }
 
   _createClass(Scene, [{
     key: 'add',
-    value: function add() {
-      // TODO
+    value: function add(cube) {
+      this.threeScene.add(cube.threeCube);
     }
   }]);
 

@@ -19,6 +19,7 @@ export default class Iso {
   }
 
   render(scene:Scene) {
+    // Setup camera
     var camera = new Iso.Camera({
       x: 10,
       y: 10,
@@ -26,8 +27,10 @@ export default class Iso {
     }, this.container);
     camera.threeCamera.lookAt(scene.threeScene.position);
 
+    // Render
     Renderer.render(scene, camera, this.container);
 
+    // Enable Orbit Controls
     var controls = new OrbitControls(camera.threeCamera, Renderer.renderDomElement);
     controls.addEventListener('change', () => {
       Renderer.render(scene, camera, this.container);

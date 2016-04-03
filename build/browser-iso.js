@@ -39,19 +39,45 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Cube = function Cube() {
-  var width = arguments.length <= 0 || arguments[0] === undefined ? 1 : arguments[0];
-  var height = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
-  var depth = arguments.length <= 2 || arguments[2] === undefined ? 1 : arguments[2];
+var Cube = function () {
+  function Cube() {
+    var width = arguments.length <= 0 || arguments[0] === undefined ? 1 : arguments[0];
+    var height = arguments.length <= 1 || arguments[1] === undefined ? 1 : arguments[1];
+    var depth = arguments.length <= 2 || arguments[2] === undefined ? 1 : arguments[2];
 
-  _classCallCheck(this, Cube);
+    _classCallCheck(this, Cube);
 
-  this.width = width;
-  this.height = height;
-  this.width = width;
-};
+    this.threeCube = null;
+
+    this.width = width;
+    this.height = height;
+    this.width = width;
+
+    var geometry = new THREE.BoxGeometry(width, height, depth);
+
+    // material
+    var material = new THREE.MeshLambertMaterial({
+      color: 0x0aeedf
+    });
+
+    this.xyz = { x: 0, y: 0, z: 0 };
+    this.threeCube = new THREE.Mesh(geometry, material);
+  }
+
+  _createClass(Cube, [{
+    key: "position",
+    value: function position(xyz) {
+      this.xyz = Object.assign(this.xyz, xyz);
+      this.threeCube.position.set(xyz.x, xyz.y, xyz.z);
+    }
+  }]);
+
+  return Cube;
+}();
 
 exports.default = Cube;
 },{}],3:[function(require,module,exports){
@@ -1182,11 +1208,17 @@ var Scene = function () {
 
     this.threeScene = new _three2.default.Scene();
 
-    this.threeScene.add(new _three2.default.AmbientLight(0x444444));
+    this.threeScene.add(new _three2.default.AmbientLight(0x333333));
 
-    var light = new _three2.default.PointLight(0xffffff, 0.8);
-    light.position.set(0, 50, 50);
+    // light
+    var light = new _three2.default.DirectionalLight(0xffffff, 0.8);
+    light.position.set(-50, 100, 50);
     this.threeScene.add(light);
+
+    // light helper
+    if (_2.default.DEBUG) {
+      this.threeScene.add(new _three2.default.DirectionalLightHelper(light, 0));
+    }
 
     // axes
     if (_2.default.DEBUG) {
@@ -1215,13 +1247,14 @@ var Scene = function () {
 
     // mesh
     var mesh = new _three2.default.Mesh(geometry, material);
-    this.threeScene.add(mesh);
+
+    //this.threeScene.add(mesh);
   }
 
   _createClass(Scene, [{
     key: 'add',
-    value: function add() {
-      // TODO
+    value: function add(cube) {
+      this.threeScene.add(cube.threeCube);
     }
   }]);
 
@@ -1286,6 +1319,7 @@ var Iso = function () {
         throw new TypeError('Value of argument "scene" violates contract.\n\nExpected:\nScene\n\nGot:\n' + _inspect(scene));
       }
 
+      // Setup camera
       var camera = new Iso.Camera({
         x: 10,
         y: 10,
@@ -1293,8 +1327,10 @@ var Iso = function () {
       }, this.container);
       camera.threeCamera.lookAt(scene.threeScene.position);
 
+      // Render
       _Renderer2.default.render(scene, camera, this.container);
 
+      // Enable Orbit Controls
       var controls = new _OrbitControls2.default(camera.threeCamera, _Renderer2.default.renderDomElement);
       controls.addEventListener('change', function () {
         _Renderer2.default.render(scene, camera, _this.container);
