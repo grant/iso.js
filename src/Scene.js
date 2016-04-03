@@ -1,4 +1,5 @@
 import THREE from 'three';
+import Iso from './';
 
 export default class Scene {
   threeScene = new THREE.Scene();
@@ -9,32 +10,37 @@ export default class Scene {
     light.position.set(0, 50, 50);
     this.threeScene.add(light);
 
-
-
     // axes
-    //scene.add(new THREE.AxisHelper(40));
+    if (Iso.DEBUG) {
+      this.threeScene.add(new THREE.AxisHelper(40));
+    }
 
     // grid
-    //var geometry = new THREE.PlaneBufferGeometry(100, 100, 10, 10);
-    //var material = new THREE.MeshBasicMaterial({wireframe: true, opacity: 0.5, transparent: true});
-    //var grid = new THREE.Mesh(geometry, material);
-    //grid.rotation.order = 'YXZ';
-    //grid.rotation.y = -Math.PI / 2;
-    //grid.rotation.x = -Math.PI / 2;
-    //scene.add(grid);
-
-
+    if (Iso.DEBUG) {
+      let geometry = new THREE.PlaneBufferGeometry(100, 100, 10, 10);
+      let material = new THREE.MeshBasicMaterial({wireframe: true, opacity: 0.5, transparent: true});
+      let grid = new THREE.Mesh(geometry, material);
+      grid.rotation.order = 'YXZ';
+      grid.rotation.y = -Math.PI / 2;
+      grid.rotation.x = -Math.PI / 2;
+      this.threeScene.add(grid);
+    }
 
     // Add a box
-
     // geometry
-    var geometry = new THREE.BoxGeometry(10, 10, 10);
+    let geometry = new THREE.BoxGeometry(10, 10, 10);
 
     // material
-    var material = new THREE.MeshNormalMaterial();
+    let material = new THREE.MeshLambertMaterial({
+      color: 0x0aeedf
+    });
 
     // mesh
-    var mesh = new THREE.Mesh(geometry, material);
+    let mesh = new THREE.Mesh(geometry, material);
     this.threeScene.add(mesh);
+  }
+
+  add() {
+    // TODO
   }
 }

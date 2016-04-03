@@ -40,12 +40,14 @@ var Renderer = function () {
         throw new TypeError('Value of argument "camera" violates contract.\n\nExpected:\nCamera\n\nGot:\n' + _inspect(camera));
       }
 
-      console.log('render');
-
-      // TODO set better render size
-      Renderer.threeRenderer.setSize(window.innerWidth, window.innerHeight);
-      container.appendChild(Renderer.threeRenderer.domElement);
+      Renderer.threeRenderer.setSize(container.offsetWidth, container.offsetHeight);
+      container.appendChild(Renderer.renderDomElement);
       Renderer.threeRenderer.render(scene.threeScene, camera.threeCamera);
+    }
+  }, {
+    key: 'renderDomElement',
+    get: function get() {
+      return Renderer.threeRenderer.domElement;
     }
   }]);
 

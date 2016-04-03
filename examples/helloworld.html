@@ -8,7 +8,7 @@
             margin: 0;
         }
         #container {
-            width: 800px;
+            width: 1000px;
             height: 600px;
             background-color: cadetblue;
             overflow: hidden;
@@ -22,11 +22,15 @@
     <!-- Scripts -->
     <script src="../build/browser-iso.js"></script>
     <script>
+        // Turn debug mode on
+        Iso.DEBUG = true;
+
+        var world = new Iso(document.getElementById('container'));
         var cube = new Iso.Cube(1, 2, 3);
 
         var scene = new Iso.Scene();
-        var camera = new Iso.Camera();
-        Iso.render(scene, camera, document.getElementById('container'));
+        scene.add(cube);
+        world.render(scene);
     </script>
 </body>
 </html>

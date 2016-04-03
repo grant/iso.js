@@ -5,12 +5,13 @@ import Camera from './Camera';
 export default class Renderer {
   static threeRenderer = new THREE.WebGLRenderer({antialias: true});
 
-  static render(scene:Scene, camera:Camera, container) {
-    console.log('render');
+  static get renderDomElement() {
+    return Renderer.threeRenderer.domElement;
+  }
 
-    // TODO set better render size
-    Renderer.threeRenderer.setSize(window.innerWidth, window.innerHeight);
-    container.appendChild(Renderer.threeRenderer.domElement);
+  static render(scene:Scene, camera:Camera, container) {
+    Renderer.threeRenderer.setSize(container.offsetWidth, container.offsetHeight);
+    container.appendChild(Renderer.renderDomElement);
     Renderer.threeRenderer.render(scene.threeScene, camera.threeCamera);
   }
 }
