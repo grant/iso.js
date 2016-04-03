@@ -4,6 +4,7 @@ import Cube from './Cube';
 import Renderer from './Renderer';
 import OrbitControls from './OrbitControls';
 import DebugStats from './DebugStats'
+import THREE from 'three';
 
 export default class Iso {
   static DEBUG = false;
@@ -11,6 +12,7 @@ export default class Iso {
   static Cube = Cube;
   static Scene = Scene;
   static Renderer = Renderer;
+  static Color = THREE.Color;
 
   /**
    * Create a new Iso world.

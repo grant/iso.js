@@ -1,5 +1,5 @@
 import THREE from 'three';
-import Iso from './';
+import Iso from './Iso';
 
 export default class Scene {
   threeScene = new THREE.Scene();

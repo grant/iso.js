@@ -38,10 +38,10 @@
             y: 0,
             z: 0,
         });
-//        scene.add(cube);
+        cube.color(new Iso.Color("rgb(255, 0, 0)"));
+        scene.add(cube);
 
-//        scene.add(new Iso.Cube(13, 22, 3));
-        for (var i = 0; i < 100; ++i) {
+        for (var i = 0; i < 10; ++i) {
             var size = Math.random() * 10;
             var cube = new Iso.Cube(size, size, size);
             var r = -40;

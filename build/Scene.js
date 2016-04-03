@@ -10,9 +10,9 @@ var _three = require('three');
 
 var _three2 = _interopRequireDefault(_three);
 
-var _ = require('./');
+var _Iso = require('./Iso');
 
-var _2 = _interopRequireDefault(_);
+var _Iso2 = _interopRequireDefault(_Iso);
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
@@ -47,18 +47,18 @@ var Scene = function () {
     this.threeScene.add(light);
 
     // light helper
-    if (_2.default.DEBUG) {
+    if (_Iso2.default.DEBUG) {
       this.threeScene.add(new _three2.default.DirectionalLightHelper(light, 0));
       this.threeScene.add(new _three2.default.CameraHelper(light.shadow.camera));
     }
 
     // axes
-    if (_2.default.DEBUG) {
+    if (_Iso2.default.DEBUG) {
       this.threeScene.add(new _three2.default.AxisHelper(40));
     }
 
     // grid
-    if (_2.default.DEBUG) {
+    if (_Iso2.default.DEBUG) {
       var _geometry = new _three2.default.PlaneBufferGeometry(100, 100, 10, 10);
       var _material = new _three2.default.MeshBasicMaterial({ wireframe: true, opacity: 0.5, transparent: true });
       var grid = new _three2.default.Mesh(_geometry, _material);

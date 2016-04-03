@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "watch": "babel --watch=./src --out-dir=./build/",
-    "watch-browser": "watchify ./build/index.js -o ./build/browser-iso.js",
+    "watch-browser": "watchify ./build/Iso.js -o ./build/browser-iso.js",
     "flow": "flow; test $? -eq 0 -o $? -eq 2"
   },
   "repository": {

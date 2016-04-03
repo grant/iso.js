@@ -1,1 +1,1 @@
-export default require("./src");
+export default require("./src/Iso");
