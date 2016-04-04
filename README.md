@@ -3,7 +3,7 @@
 
 An isometric project graphics library using three.js's orthographic camera.
 
-```sh
+```hs
 npm install iso.js --save
 ```
 
@@ -28,23 +28,23 @@ The main components are `Scene`, `Cube`.
 Additional components include `Color`, `Renderer`
 
 ## Iso
-##### `Iso.DEBUG`:`boolean` - Turn on debugging visuals (XYZ axes, Grid, Light)
+- `Iso.DEBUG`:`boolean` - Turn on debugging visuals (XYZ axes, Grid, Light)
 
 ### `Iso.Scene()`
-##### `Scene.add(object)`
-##### `Scene.clear()`
+- `Scene.add(object)`
+- `Scene.clear()`
 
 ### `Iso.Cube(width, height, depth)`
-##### `Cube.position(x, y, z)`
-##### `Cube.color(color:Iso.Color)`
-##### `Cube.opacity(opacity)`
+- `Cube.position(x, y, z)`
+- `Cube.color(color:Iso.Color)`
+- `Cube.opacity(opacity)`
 
 ### `Iso.Camera` - The global camera for this scene.
-##### `Camera.zoom(zoomLevel)`
-##### `Camera.position(x, y)`
+- `Camera.zoom(zoomLevel)`
+- `Camera.position(x, y)`
 
 ### `Iso.Renderer` - The scene renderer.
-##### `Renderer.SHADOWS_ENABLED`:`boolean` - Turn on shadows
+- `Renderer.SHADOWS_ENABLED`:`boolean` - Turn on shadows
 
 ## Build
 
