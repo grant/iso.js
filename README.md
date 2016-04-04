@@ -27,25 +27,23 @@ import {Cube, Camera} from Iso;
 
 See [examples/](examples/) for documented code.
 
-The main components are `Scene`, `Cube`. Additional components include `Color`, `Renderer`.
+The main components are `Iso`, `Cube`. Additional components include `Color`, `Renderer`.
 
-#### `Iso`
+#### `Iso` - An Isometric World
 - `Iso.DEBUG`:`boolean` - Turn on debugging visuals (XYZ axes, Grid, Light)
-
-##### `Iso.Scene()`
-- `Scene.add(object)`
-- `Scene.clear()`
+- `Iso.add(object)`
+- `Iso.clear()`
 
 ##### `Iso.Cube(width, height, depth)`
 - `Cube.position(x, y, z)`
 - `Cube.color(color:Iso.Color)`
 - `Cube.opacity(opacity)`
 
-##### `Iso.Camera` - The global camera for this scene.
+##### `Iso.Camera` - The global camera for this world.
 - `Camera.zoom(zoomLevel)`
 - `Camera.position(x, y)`
 
-##### `Iso.Renderer` - The scene renderer.
+##### `Iso.Renderer` - The world renderer.
 - `Renderer.SHADOWS_ENABLED`:`boolean` - Turn on shadows
 
 ## Build

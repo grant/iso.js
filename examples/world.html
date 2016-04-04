@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Scene</title>
+    <title>World</title>
     <style>
         html, body {
             width: 100%;
@@ -32,15 +32,12 @@
     var container = document.getElementById('container');
 
     var world = new Iso(container);
-    var scene = new Iso.Scene();
-
-    scene.add(new Cube(1, 1, 1).position(0, 0, 0).color(new Color("rgb(200, 0, 0)")));
-
-    world.render(scene);
+    world.add(new Cube(1, 1, 1).position(0, 0, 0).color(new Color("rgb(200, 0, 0)")));
+    world.render();
 
     // Clear the screen after 1 second
     setTimeout(function() {
-        scene.clear();
+        world.clear();
         world.render(scene);
     }, 1000);
 </script>

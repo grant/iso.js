@@ -33,7 +33,6 @@
     var container = document.getElementById('container');
 
     var world = new Iso(container);
-    var scene = new Iso.Scene();
 
     for (var i = 0; i < 1000; ++i) {
         var size = Math.random() * 10;
@@ -45,10 +44,10 @@
             y: Math.random() * r,
             z: Math.random() * r
         });
-        scene.add(cube);
+        world.add(cube);
     }
 
-    world.render(scene);
+    world.render();
 </script>
 </body>
 </html>

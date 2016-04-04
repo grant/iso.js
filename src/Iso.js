@@ -10,30 +10,45 @@ export default class Iso {
   static DEBUG = false;
   static Camera = Camera;
   static Cube = Cube;
-  static Scene = Scene;
   static Renderer = Renderer;
   static Color = THREE.Color;
 
+  container = null;
   firstRender = true;
-  camera = null;
+  scene = null;
 
   /**
    * Create a new Iso world.
    * @param container The DOMNode container.
    */
-  constructor(container) {
+  constructor(container:HTMLElement) {
     this.container = container;
-
-    // Setup camera
-    this.camera = new Iso.Camera({
-      x: 10,
-      z: 10,
-      zoom: 6,
-    }, this.container);
+    this.scene = new Scene(container);
   }
 
-  render(scene:Scene) {
-    this.camera.threeCamera.lookAt(scene.threeScene.position);
+  /**
+   * Adds an object to the scene
+   * @param object The Iso Cube
+   * @returns {Iso}
+   */
+  add(object):Iso {
+    this.scene.add(object);
+    return this;
+  }
+
+  /**
+   * Clears the scene from all objects
+   * @returns {Iso}
+   */
+  clear():Iso {
+    this.scene.clear();
+    return this;
+  }
+
+  render() {
+    let scene = this.scene;
+    let camera = scene.camera;
+    camera.threeCamera.lookAt(scene.threeScene.position);
 
     // Render Debug Stats
     if (Iso.DEBUG) {
@@ -42,15 +57,15 @@ export default class Iso {
     }
 
     // Render
-    Renderer.render(scene, this.camera, this.container);
+    Renderer.render(scene, this.container);
 
     if (this.firstRender) {
       this.firstRender = false;
 
       // Enable Orbit Controls
-      var controls = new OrbitControls(this.camera.threeCamera, Renderer.renderDomElement);
+      var controls = new OrbitControls(scene.camera.threeCamera, Renderer.renderDomElement);
       controls.addEventListener('change', () => {
-        Renderer.render(scene, this.camera, this.container);
+        Renderer.render(scene, this.container);
       });
       controls.enableZoom = true;
       controls.enablePan = true;
@@ -60,4 +75,6 @@ export default class Iso {
 }
 
 // Export globally for browserify
-window.Iso = Iso;
+if (!!window) {
+  window.Iso = Iso;
+}

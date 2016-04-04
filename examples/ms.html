@@ -32,16 +32,15 @@
     var container = document.getElementById('container');
 
     var world = new Iso(container);
-    var scene = new Iso.Scene();
 
     let s = 0.2;
     let separation = 0.1;
-    scene.add(new Cube(1, s, 1).position(separation, 0, separation).color(new Color("rgb(248, 104, 44)")).opacity(0.5));
-    scene.add(new Cube(1, s, 1).position(separation, 0, -1).color(new Color("rgb(0, 180, 241)")).opacity(0.5));
-    scene.add(new Cube(1, s, 1).position(-1, 0, separation).color(new Color("rgb(145, 195, 0)")).opacity(0.5));
-    scene.add(new Cube(1, s, 1).position(-1, 0, -1).color(new Color("rgb(255, 195, 0)")).opacity(0.5));
+    world.add(new Cube(1, s, 1).position(separation, 0, separation).color(new Color("rgb(248, 104, 44)")).opacity(0.5));
+    world.add(new Cube(1, s, 1).position(separation, 0, -1).color(new Color("rgb(0, 180, 241)")).opacity(0.5));
+    world.add(new Cube(1, s, 1).position(-1, 0, separation).color(new Color("rgb(145, 195, 0)")).opacity(0.5));
+    world.add(new Cube(1, s, 1).position(-1, 0, -1).color(new Color("rgb(255, 195, 0)")).opacity(0.5));
 
-    world.render(scene);
+    world.render();
 </script>
 </body>
 </html>

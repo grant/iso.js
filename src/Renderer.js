@@ -3,7 +3,7 @@ import Scene from './Scene';
 import Camera from './Camera';
 
 export default class Renderer {
-  static SHADOWS_ENABLED = true;
+  static SHADOWS_ENABLED = false;
   static threeRenderer = new THREE.WebGLRenderer({
     antialias: true,
     alpha: true,
@@ -13,7 +13,9 @@ export default class Renderer {
     return Renderer.threeRenderer.domElement;
   }
 
-  static render(scene:Scene, camera:Camera, container:HTMLElement) {
+  static render(scene:Scene, container:HTMLElement) {
+    let camera = scene.camera;
+
     // Setup shadows
     Renderer.threeRenderer.shadowMap.enabled = Renderer.SHADOWS_ENABLED;
     Renderer.threeRenderer.shadowMap.soft = true;

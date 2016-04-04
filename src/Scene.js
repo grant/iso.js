@@ -3,8 +3,9 @@ import Iso from './Iso';
 
 export default class Scene {
   threeScene = new THREE.Scene();
+  camera = null;
 
-  constructor() {
+  constructor(container:HTMLElement) {
     // Fog
     this.threeScene.fog = new THREE.FogExp2(0x000000, 5);
 
@@ -26,7 +27,6 @@ export default class Scene {
     light.shadow.camera.far = 100;
 
     this.threeScene.add(light);
-
 
     // light helper
     if (Iso.DEBUG) {
@@ -53,10 +53,22 @@ export default class Scene {
       grid.rotation.x = -Math.PI / 2;
       this.threeScene.add(grid);
     }
+
+    this.setupCamera(container);
   }
 
   add(mesh):Scene {
     this.threeScene.add(mesh.threeCube);
+    return this;
+  }
+
+  setupCamera(container:HTMLElement) {
+    // Setup camera
+    this.camera = new Iso.Camera({
+      x: 10,
+      z: 10,
+      zoom: 6,
+    }, container);
     return this;
   }
 
