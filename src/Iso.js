@@ -14,22 +14,26 @@ export default class Iso {
   static Renderer = Renderer;
   static Color = THREE.Color;
 
+  firstRender = true;
+  camera = null;
+
   /**
    * Create a new Iso world.
    * @param container The DOMNode container.
    */
   constructor(container) {
     this.container = container;
-  }
 
-  render(scene:Scene) {
     // Setup camera
-    var camera = new Iso.Camera({
+    this.camera = new Iso.Camera({
       x: 10,
       z: 10,
       zoom: 6,
     }, this.container);
-    camera.threeCamera.lookAt(scene.threeScene.position);
+  }
+
+  render(scene:Scene) {
+    this.camera.threeCamera.lookAt(scene.threeScene.position);
 
     // Render Debug Stats
     if (Iso.DEBUG) {
@@ -38,16 +42,20 @@ export default class Iso {
     }
 
     // Render
-    Renderer.render(scene, camera, this.container);
+    Renderer.render(scene, this.camera, this.container);
 
-    // Enable Orbit Controls
-    var controls = new OrbitControls(camera.threeCamera, Renderer.renderDomElement);
-    controls.addEventListener('change', () => {
-      Renderer.render(scene, camera, this.container);
-    });
-    controls.enableZoom = true;
-    controls.enablePan = true;
-    controls.maxPolarAngle = Math.PI / 2;
+    if (this.firstRender) {
+      this.firstRender = false;
+
+      // Enable Orbit Controls
+      var controls = new OrbitControls(this.camera.threeCamera, Renderer.renderDomElement);
+      controls.addEventListener('change', () => {
+        Renderer.render(scene, this.camera, this.container);
+      });
+      controls.enableZoom = true;
+      controls.enablePan = true;
+      controls.maxPolarAngle = Math.PI / 2;
+    }
   }
 }
 

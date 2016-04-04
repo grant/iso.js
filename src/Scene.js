@@ -9,7 +9,7 @@ export default class Scene {
     this.threeScene.fog = new THREE.FogExp2(0x000000, 5);
 
     // Ambient light
-    this.threeScene.add(new THREE.AmbientLight(0xaaaaaa));
+    this.threeScene.add(new THREE.AmbientLight(0x999999));
 
     // Directional light
     var light = new THREE.DirectionalLight(0xffffff, 1);
@@ -42,31 +42,29 @@ export default class Scene {
     // grid
     if (Iso.DEBUG) {
       let geometry = new THREE.PlaneBufferGeometry(100, 100, 10, 10);
-      let material = new THREE.MeshBasicMaterial({wireframe: true, opacity: 0.5, transparent: true});
+      let material = new THREE.MeshBasicMaterial({
+        wireframe: true,
+        opacity: 0.5,
+        transparent: true
+      });
       let grid = new THREE.Mesh(geometry, material);
       grid.rotation.order = 'YXZ';
       grid.rotation.y = -Math.PI / 2;
       grid.rotation.x = -Math.PI / 2;
       this.threeScene.add(grid);
     }
-
-    // Add a box
-    // geometry
-    let geometry = new THREE.BoxGeometry(10, 10, 10);
-
-    // material
-    let material = new THREE.MeshLambertMaterial({
-      color: 0x0aeedf
-    });
-
-    // mesh
-    let mesh = new THREE.Mesh(geometry, material);
-
-    //this.threeScene.add(mesh);
   }
 
-  add(cube):Scene {
-    this.threeScene.add(cube.threeCube)
+  add(mesh):Scene {
+    this.threeScene.add(mesh.threeCube);
+    return this;
+  }
+
+  clear():Scene {
+    let meshes = this.threeScene.children.filter(c => c instanceof THREE.Mesh);
+    for (let child of meshes) {
+      this.threeScene.remove(child);
+    }
     return this;
   }
 }
