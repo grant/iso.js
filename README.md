@@ -1,15 +1,18 @@
 # iso.js
-## A library for rendering isometric graphics
 
-An isometric project graphics library using three.js's orthographic camera.
+A library for isometric graphics using [three.js](https://github.com/mrdoob/three.js/).
+
+[Project Page](https://grant.github.io/iso.js) — [Playground](https://grant.github.io/iso.js/playground).
+
+## Usage
 
 ```hs
 npm install iso.js --save
 ```
 
-## Usage
-
 TODO
+...short code snippet...
+...pretty hello world image...
 
 #### Browserify
 
@@ -22,28 +25,27 @@ import {Cube, Camera} from Iso;
 
 ## Documentation
 
-##### See [examples](examples/) for documented code.
+See [examples/](examples/) for documented code.
 
-The main components are `Scene`, `Cube`.
-Additional components include `Color`, `Renderer`
+The main components are `Scene`, `Cube`. Additional components include `Color`, `Renderer`.
 
-## Iso
+#### `Iso`
 - `Iso.DEBUG`:`boolean` - Turn on debugging visuals (XYZ axes, Grid, Light)
 
-### `Iso.Scene()`
+##### `Iso.Scene()`
 - `Scene.add(object)`
 - `Scene.clear()`
 
-### `Iso.Cube(width, height, depth)`
+##### `Iso.Cube(width, height, depth)`
 - `Cube.position(x, y, z)`
 - `Cube.color(color:Iso.Color)`
 - `Cube.opacity(opacity)`
 
-### `Iso.Camera` - The global camera for this scene.
+##### `Iso.Camera` - The global camera for this scene.
 - `Camera.zoom(zoomLevel)`
 - `Camera.position(x, y)`
 
-### `Iso.Renderer` - The scene renderer.
+##### `Iso.Renderer` - The scene renderer.
 - `Renderer.SHADOWS_ENABLED`:`boolean` - Turn on shadows
 
 ## Build
@@ -62,11 +64,11 @@ This will generate `build/` files and log type mistakes to the console.
 - https://github.com/jdan/isomer
 - https://github.com/nosir/obelisk.js
 
-The key differences between these libraries and *iso.js* is
-- Performance (WebGL)
-- Ability to use 3D effects such as lights, shadows, and camera angles.
-- Extensibility
+The key differences between these libraries and *iso.js* are:
+- **Performance** (WebGL)
+- **3D effects** such as lights, shadows, and camera angles.
+- **Extensibility**
 
-# Contribute!
+## Contribute!
 
 Please send pull requests! There are many features I would love to see. <3
