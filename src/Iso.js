@@ -2,9 +2,9 @@ import Camera from './Camera';
 import Scene from './Scene';
 import Cube from './Cube';
 import Renderer from './Renderer';
-import OrbitControls from './OrbitControls';
 import DebugStats from './DebugStats'
 import THREE from 'three';
+var OrbitControls = require('three-orbit-controls')(THREE);
 
 export default class Iso {
   static DEBUG = false;

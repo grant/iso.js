@@ -45,6 +45,7 @@
     "immutable": "^3.7.6",
     "stats.js": "^1.0.0",
     "three": "^0.75.0",
+    "three-orbit-controls": "^72.0.0",
     "watchify": "^3.7.0"
   },
   "dependencies": {}
