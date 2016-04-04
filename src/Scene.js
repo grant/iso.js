@@ -72,6 +72,15 @@ export default class Scene {
     return this;
   }
 
+  /**
+   * World resize callback.
+   * @returns {Scene}
+   */
+  resize():Scene {
+    this.camera.resize();
+    return this;
+  }
+
   clear():Scene {
     let meshes = this.threeScene.children.filter(c => c instanceof THREE.Mesh);
     for (let child of meshes) {

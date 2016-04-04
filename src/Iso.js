@@ -72,6 +72,23 @@ export default class Iso {
       controls.maxPolarAngle = Math.PI / 2;
     }
   }
+
+  /**
+   * World resize callback
+   *
+   * Currently doesn't work. :(
+   *
+   * <pre>
+   * window.addEventListener('resize', function() {
+   *   world.resize();
+   * });
+   * </pre>
+   */
+  resize() {
+    this.scene.resize();
+    Renderer.resize(this.container);
+    this.render();
+  }
 }
 
 // Export globally for browserify

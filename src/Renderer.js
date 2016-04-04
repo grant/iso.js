@@ -13,6 +13,11 @@ export default class Renderer {
     return Renderer.threeRenderer.domElement;
   }
 
+  /**
+   * Renders the scene to the container
+   * @param scene The scene to render
+   * @param container
+   */
   static render(scene:Scene, container:HTMLElement) {
     let camera = scene.camera;
 
@@ -29,5 +34,13 @@ export default class Renderer {
 
     // Render
     Renderer.threeRenderer.render(scene.threeScene, camera.threeCamera);
+  }
+
+  /**
+   * World resize callback.
+   * @param container
+   */
+  static resize(container:HTMLElement) {
+    Renderer.threeRenderer.setSize(container.offsetWidth, container.offsetHeight);
   }
 }
