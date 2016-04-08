@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cat Game</title>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+        }
+
+        #container {
+            width: 100%;
+            height: 100%;
+            background: black;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<div id="container"></div>
+
+<!-- Scripts -->
+<script src="../build/browser-iso.js"></script>
+<script>
+    var Cube = Iso.Cube;
+    var Color = Iso.Color;
+    Iso.DEBUG = true;
+
+    var container = document.getElementById('container');
+    var world = new Iso(container);
+
+    // Constants
+    var SIZE = 7;
+    var COLOR_BLUE = new Color("#5040ef");
+    var COLOR_RED = new Color("#ff0000");
+    var COLOR_YELLOW = new Color("#dfdf00");
+    var COLOR_TURQUOISE = new Color("#50af9f");
+
+    // Generate tiles ((0,0) is top, -x is right, -z is left)
+    var tiles = [];
+    function getTilePosition(xpos, ypos) {
+        return {
+            x: -xpos - 1,
+            y: SIZE - xpos - ypos - 1,
+            z: -ypos - 1,
+        };
+    }
+    for (var xpos = 0; xpos < SIZE; ++xpos) {
+        tiles[xpos] = [];
+        for (var ypos = 0; ypos < SIZE - xpos; ++ypos) {
+            var cube = new Cube(1, 1, 1)
+                    .position(getTilePosition(xpos, ypos))
+                    .color({
+                        [Cube.SIDE.XPOS]: COLOR_TURQUOISE,
+                        [Cube.SIDE.XNEG]: COLOR_TURQUOISE,
+                        [Cube.SIDE.ZPOS]: COLOR_TURQUOISE,
+                        [Cube.SIDE.ZNEG]: COLOR_TURQUOISE,
+                        [Cube.SIDE.YPOS]: COLOR_BLUE,
+                        [Cube.SIDE.YNEG]: COLOR_BLUE,
+                    });
+
+            tiles[xpos][ypos] = cube;
+            world.add(cube);
+        }
+    }
+
+    function colorTileYellow(x, z) {
+        tiles[x][z].color({
+            [Cube.SIDE.XPOS]: COLOR_TURQUOISE,
+            [Cube.SIDE.XNEG]: COLOR_TURQUOISE,
+            [Cube.SIDE.ZPOS]: COLOR_TURQUOISE,
+            [Cube.SIDE.ZNEG]: COLOR_TURQUOISE,
+            [Cube.SIDE.YPOS]: COLOR_YELLOW,
+            [Cube.SIDE.YNEG]: COLOR_YELLOW,
+        });
+    }
+
+    // Cat
+    var catLocation = {
+        x: 0,
+        z: 0,
+    };
+    function getCatPosition() {
+        var tilePos = getTilePosition(catLocation.x, catLocation.z);
+        tilePos.y += 1;
+        return tilePos;
+    }
+    var cat = new Iso.Cube(1, 1, 1).position(getCatPosition()).color(COLOR_RED);
+    colorTileYellow(catLocation.x, catLocation.z);
+    world.add(cat);
+
+    // Keyboard Controls
+    var Controls = {
+        LEFT: false,
+        UP: false,
+        RIGHT: false,
+        DOWN: false,
+    };
+
+    window.addEventListener('keydown', function (e) {
+        switch (e.keyCode) {
+            case 87: // W
+            case 38: // Up Arrow
+                Controls.UP = true;
+                break;
+            case 83: // S
+            case 40: // Down Arrow
+                Controls.DOWN = true;
+                break;
+            case 65: // A
+            case 37: // Left Arrow
+                Controls.LEFT = true;
+                break;
+            case 68: // D
+            case 39: // Right Arrow
+                Controls.RIGHT = true;
+                break;
+        }
+    });
+
+    window.addEventListener('keyup', function (e) {
+        switch (e.keyCode) {
+            case 87: // W
+            case 38: // Up Arrow
+                Controls.UP = false;
+                break;
+            case 83: // S
+            case 40: // Down Arrow
+                Controls.DOWN = false;
+                break;
+            case 65: // A
+            case 37: // Left Arrow
+                Controls.LEFT = false;
+                break;
+            case 68: // D
+            case 39: // Right Arrow
+                Controls.RIGHT = false;
+                break;
+        }
+    });
+
+    world.render();
+
+    // Game constants
+    var MOVE_SPEED = 100;
+    var lastMoveTime = +new Date();
+
+    function locationWithinBounds(location) {
+        return tiles[location.x] && tiles[location.x][location.z];
+    }
+
+    // Render loop
+    function render() {
+        var thisTime = +new Date();
+        requestAnimationFrame(render);
+
+        // Check if cat can move
+        if (thisTime - lastMoveTime > MOVE_SPEED && (Controls.RIGHT || Controls.LEFT || Controls.UP || Controls.DOWN)) {
+            lastMoveTime = thisTime;
+            var newCatLocation = Object.assign({}, catLocation);
+            if (Controls.RIGHT) {
+                ++newCatLocation.x;
+            }
+            if (Controls.LEFT) {
+                --newCatLocation.x;
+            }
+            if (Controls.UP) {
+                --newCatLocation.z;
+            }
+            if (Controls.DOWN) {
+                ++newCatLocation.z;
+            }
+            // Move the cat object
+            if (locationWithinBounds(newCatLocation)) {
+                catLocation = newCatLocation;
+            }
+
+            // Color the tile
+            if (locationWithinBounds(catLocation)) {
+                colorTileYellow(catLocation.x, catLocation.z);
+            }
+        }
+
+        cat.position(getCatPosition());
+
+        world.render();
+    }
+
+//    tiles[1][1].color(COLOR_TURQUOISE);
+    render();
+
+</script>
+</body>
+</html>

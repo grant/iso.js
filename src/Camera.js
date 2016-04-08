@@ -15,6 +15,7 @@ export default class Camera {
     this.zoom(options.zoom);
     this.threeCamera.rotation.order = 'YXZ';
     this.threeCamera.position.set(-50, 50, -50);
+    window.camera = this.threeCamera;
   }
 
   /**

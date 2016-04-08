@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>World</title>
+    <title>Color</title>
     <style>
         html, body {
             width: 100%;
@@ -33,14 +33,16 @@
     var container = document.getElementById('container');
 
     var world = new Iso(container);
-    world.add(new Cube(1, 1, 1).position(0, 0, 0).color(new Color("rgb(200, 0, 0)")));
-    world.render();
 
-    // Clear the screen after 1 second
-    setTimeout(function() {
-        world.clear();
+    var cube = new Cube(2, 2, 2);
+    world.add(cube);
+
+    setInterval(function() {
+        cube.color(new Color(Math.random() * 0xffffff));
         world.render();
-    }, 1000);
+    }, 250);
+
+    world.render();
 </script>
 </body>
 </html>

@@ -32,16 +32,16 @@ The main components are `Iso`, `Cube`. Additional components include `Color`, `R
 #### `Iso` - An Isometric World
 - `Iso.DEBUG`:`boolean` - Turn on debugging visuals (XYZ axes, Grid, Light)
 - `Iso.add(object)`
-- `Iso.clear()`
+- `Iso.clear()` - Remove all objects from the world
 
 ##### `Iso.Cube(width, height, depth)`
 - `Cube.position(x, y, z)`
 - `Cube.color(color:Iso.Color)`
 - `Cube.opacity(opacity)`
 
-##### `Iso.Camera` - The global camera for this world.
+##### `Iso.Camera` - The global isometric perspective camera for this world.
 - `Camera.zoom(zoomLevel)`
-- `Camera.position(x, y)`
+- `Camera.pan(x, y)`
 
 ##### `Iso.Renderer` - The world renderer.
 - `Renderer.SHADOWS_ENABLED`:`boolean` - Turn on shadows

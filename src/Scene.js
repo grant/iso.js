@@ -67,7 +67,7 @@ export default class Scene {
     this.camera = new Iso.Camera({
       x: 10,
       z: 10,
-      zoom: 6,
+      zoom: 3,
     }, container);
     return this;
   }

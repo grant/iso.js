@@ -69,7 +69,7 @@ export default class Iso {
       });
       controls.enableZoom = true;
       controls.enablePan = true;
-      controls.maxPolarAngle = Math.PI / 2;
+      //controls.maxPolarAngle = Math.PI / 2;
     }
   }
 
