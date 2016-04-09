@@ -76,8 +76,10 @@ export default class Cube {
     } else {
       for (let i = 0; i < this.threeCube.geometry.faces.length; i += 2) {
         let faceColor = color[indexToSide(i)];
-        this.threeCube.geometry.faces[i].color.set(faceColor);
-        this.threeCube.geometry.faces[i + 1].color.set(faceColor);
+        if (faceColor) {
+          this.threeCube.geometry.faces[i].color.set(faceColor);
+          this.threeCube.geometry.faces[i + 1].color.set(faceColor);
+        }
       }
     }
     this.threeCube.geometry.colorsNeedUpdate = true;

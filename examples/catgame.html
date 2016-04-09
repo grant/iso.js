@@ -29,7 +29,7 @@
 <script>
     var Cube = Iso.Cube;
     var Color = Iso.Color;
-    Iso.DEBUG = true;
+    Iso.DEBUG = false;
 
     var container = document.getElementById('container');
     var world = new Iso(container);
@@ -55,11 +55,8 @@
         for (var ypos = 0; ypos < SIZE - xpos; ++ypos) {
             var cube = new Cube(1, 1, 1)
                     .position(getTilePosition(xpos, ypos))
+                    .color(COLOR_TURQUOISE)
                     .color({
-                        [Cube.SIDE.XPOS]: COLOR_TURQUOISE,
-                        [Cube.SIDE.XNEG]: COLOR_TURQUOISE,
-                        [Cube.SIDE.ZPOS]: COLOR_TURQUOISE,
-                        [Cube.SIDE.ZNEG]: COLOR_TURQUOISE,
                         [Cube.SIDE.YPOS]: COLOR_BLUE,
                         [Cube.SIDE.YNEG]: COLOR_BLUE,
                     });
@@ -71,10 +68,6 @@
 
     function colorTileYellow(x, z) {
         tiles[x][z].color({
-            [Cube.SIDE.XPOS]: COLOR_TURQUOISE,
-            [Cube.SIDE.XNEG]: COLOR_TURQUOISE,
-            [Cube.SIDE.ZPOS]: COLOR_TURQUOISE,
-            [Cube.SIDE.ZNEG]: COLOR_TURQUOISE,
             [Cube.SIDE.YPOS]: COLOR_YELLOW,
             [Cube.SIDE.YNEG]: COLOR_YELLOW,
         });
@@ -85,13 +78,21 @@
         x: 0,
         z: 0,
     };
+    var targetCatLocation = {
+        x: catLocation.x,
+        z: catLocation.z,
+    };
     function getCatPosition() {
+        var percentIncrease = 0.3;
+        catLocation.x = catLocation.x + (catLocation.x - targetCatLocation.x) * -percentIncrease;
+        catLocation.z = catLocation.z + (catLocation.z - targetCatLocation.z) * -percentIncrease;
         var tilePos = getTilePosition(catLocation.x, catLocation.z);
-        tilePos.y += 1;
+        var h = (Math.sin((+new Date)/200) + 1) * 0.2 + 0.1;
+        tilePos.y += 1 + h;
         return tilePos;
     }
     var cat = new Iso.Cube(1, 1, 1).position(getCatPosition()).color(COLOR_RED);
-    colorTileYellow(catLocation.x, catLocation.z);
+    colorTileYellow(targetCatLocation.x, targetCatLocation.z);
     world.add(cat);
 
     // Keyboard Controls
@@ -162,7 +163,7 @@
         // Check if cat can move
         if (thisTime - lastMoveTime > MOVE_SPEED && (Controls.RIGHT || Controls.LEFT || Controls.UP || Controls.DOWN)) {
             lastMoveTime = thisTime;
-            var newCatLocation = Object.assign({}, catLocation);
+            var newCatLocation = Object.assign({}, targetCatLocation);
             if (Controls.RIGHT) {
                 ++newCatLocation.x;
             }
@@ -177,12 +178,12 @@
             }
             // Move the cat object
             if (locationWithinBounds(newCatLocation)) {
-                catLocation = newCatLocation;
+                targetCatLocation = newCatLocation;
             }
 
             // Color the tile
-            if (locationWithinBounds(catLocation)) {
-                colorTileYellow(catLocation.x, catLocation.z);
+            if (locationWithinBounds(targetCatLocation)) {
+                colorTileYellow(targetCatLocation.x, targetCatLocation.z);
             }
         }
 
@@ -191,9 +192,7 @@
         world.render();
     }
 
-//    tiles[1][1].color(COLOR_TURQUOISE);
     render();
-
 </script>
 </body>
 </html>

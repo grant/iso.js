@@ -57,15 +57,18 @@ export default class Iso {
     }
 
     // Render
-    Renderer.render(scene, this.container);
+    Renderer.render(scene);
 
     if (this.firstRender) {
       this.firstRender = false;
 
+      // Setup the renderer
+      Renderer.setup(this.container);
+
       // Enable Orbit Controls
       var controls = new OrbitControls(scene.camera.threeCamera, Renderer.renderDomElement);
       controls.addEventListener('change', () => {
-        Renderer.render(scene, this.container);
+        Renderer.render(scene);
       });
       controls.enableZoom = true;
       controls.enablePan = true;

@@ -45,7 +45,7 @@ export default class Scene {
       let material = new THREE.MeshBasicMaterial({
         wireframe: true,
         opacity: 0.5,
-        transparent: true
+        transparent: true,
       });
       let grid = new THREE.Mesh(geometry, material);
       grid.rotation.order = 'YXZ';
