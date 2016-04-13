@@ -1,8 +1,11 @@
 # iso.js
 
-A library for isometric graphics using [three.js](https://github.com/mrdoob/three.js/).
+TODO INCLUDE LOGO (spell out ISO with cubes)
+<img align="right" src="doc/subpagelist.png">
 
-[Project Page](https://grant.github.io/iso.js) — [Playground](https://grant.github.io/iso.js/playground).
+A library for isometric graphics using three.js.
+
+[Project Page](https://grant.github.io/iso.js)
 
 ## Usage
 
