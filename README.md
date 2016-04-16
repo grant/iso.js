@@ -1,5 +1,7 @@
 # iso.js
 
+WORK IN PROGRESS...
+
 A library for isometric graphics using [three.js](https://github.com/mrdoob/three.js/).
 
 [Project Page](https://grant.github.io/iso.js) — [Playground](https://grant.github.io/iso.js/playground).
@@ -56,7 +58,7 @@ npm run watch # watches and builds npm version
 npm run watch-browser # watches and builds packaged browser version
 ```
 
-This will generate `build/` files and log type mistakes to the console. 
+This will generate `build/` files and log type mistakes to the console.
 
 ## Similar libraries
 - https://github.com/jdan/isomer
