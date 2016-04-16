@@ -4,7 +4,12 @@ WORK IN PROGRESS...
 
 A library for isometric graphics using [three.js](https://github.com/mrdoob/three.js/).
 
-[Project Page](https://grant.github.io/iso.js) — [Playground](https://grant.github.io/iso.js/playground).
+TODO INCLUDE LOGO (spell out ISO with cubes)
+<img align="right" src="doc/subpagelist.png">
+
+A library for isometric graphics using three.js.
+
+[Project Page](https://grant.github.io/iso.js)
 
 ## Usage
 
