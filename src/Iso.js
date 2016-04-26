@@ -57,8 +57,6 @@ export default class Iso {
     }
 
     // Render
-    Renderer.render(scene);
-
     if (this.firstRender) {
       this.firstRender = false;
 
@@ -74,6 +72,8 @@ export default class Iso {
       controls.enablePan = true;
       //controls.maxPolarAngle = Math.PI / 2;
     }
+
+    Renderer.render(scene);
   }
 
   /**
