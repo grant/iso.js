@@ -31,7 +31,7 @@ export default class Tile extends Mesh {
     // material
     let material = new THREE.MeshLambertMaterial({
       vertexColors: THREE.FaceColors,
-      //side: THREE.DoubleSide,
+      side: THREE.DoubleSide,
     });
 
     this.threeMesh = new THREE.Mesh(geometry, material);
