@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Impossible</title>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+        }
+
+        #container {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<div id="container"></div>
+
+<!-- Scripts -->
+<script src="../build/browser-iso.js"></script>
+<script>
+    var Cube = Iso.Cube;
+    var Tile = Iso.Tile;
+    var Color = Iso.Color;
+    Iso.DEBUG = false;
+
+    var container = document.getElementById('container');
+
+    var world = new Iso(container);
+
+    var colorDark = new Color('#aa8800');
+    var colorLight = new Color('#decd87');
+
+    function getColor(x, z) {
+        return (x + z) % 2 == 0 ? colorLight : colorDark;
+    }
+
+    function addTile(x, y, z) {
+        world.add(new Tile(1, 1).position(x, y, z).color(getColor(x, z)));
+    }
+
+    function addCube(x, y, z) {
+        world.add(new Cube(1, 1, 1).position(x, y, z).color(getColor(x, z)));
+    }
+
+    function addCharacter(x, y, z, color) {
+        var size = 0.3;
+        var centerOffset = (1 - size)/2;
+        world.add(new Cube(size, size, size).position(x + centerOffset, y, z + centerOffset).color(color));
+    }
+
+    // left line
+    addTile(0, 0, 0);
+    addTile(1, 0, 0);
+    addTile(2, 0, 0);
+    addTile(3, 0, 0);
+    addTile(4, 0, 0);
+
+    // upper l
+    addTile(1, 2, 2);
+    addTile(2, 2, 2);
+    addTile(2, 2, 1);
+    addTile(2, 2, 0);
+    addTile(2, 2, -1);
+
+    // blocks
+    addCube(0, 0, 1);
+    addCube(0, 1, 2);
+
+    // characters
+    addCharacter(4, 0, 0, new Color('#ef2d5e')); // pink
+    addCharacter(2, 2, -1, new Color('#24caff')); // blue
+
+    world.render();
+</script>
+</body>
+</html>

@@ -1,3 +1,4 @@
+import Mesh from './Mesh';
 import THREE from 'three';
 import Enum from 'es6-enum';
 
@@ -10,10 +11,10 @@ function indexToSide(index:number) {
     Cube.SIDE.ZPOS,
     Cube.SIDE.ZNEG,
   ];
-  return sideIndex[Math.floor(index/2)];
+  return sideIndex[Math.floor(index / 2)];
 }
 
-export default class Cube {
+export default class Cube extends Mesh {
   static SIDE = Enum(
     'XPOS',
     'XNEG',
@@ -22,10 +23,9 @@ export default class Cube {
     'ZPOS',
     'ZNEG'
   );
-  threeCube = null;
-  xyz = {x: 0, y: 0, z: 0};
 
   constructor(x = 1, y = 1, z = 1) {
+    super();
     this.size = {x, y, z};
 
     // geometry
@@ -37,25 +37,25 @@ export default class Cube {
       vertexColors: THREE.FaceColors,
     });
 
-    this.threeCube = new THREE.Mesh(geometry, material);
+    this.threeMesh = new THREE.Mesh(geometry, material);
     this.position(this.xyz);
 
     // shadow
-    this.threeCube.castShadow = true;
-    this.threeCube.receiveShadow = true;
+    this.threeMesh.castShadow = true;
+    this.threeMesh.receiveShadow = true;
   }
 
   /**
    * Set the position
    * Either pass {x, y, z} or (x, y, z) tuple
-   * @returns {Cube}
+   * @returns {Tile}
    */
-  position(x, y, z):Cube {
+  position(x, y, z):Mesh {
     let xyz = (arguments.length === 3) ? {x, y, z} : x;
     this.xyz = xyz;
 
     // Un-center the cube
-    this.threeCube.position.set(
+    this.threeMesh.position.set(
       xyz.x + (this.size.x / 2),
       xyz.y + (this.size.y / 2),
       xyz.z + (this.size.z / 2)
@@ -65,24 +65,24 @@ export default class Cube {
 
   /**
    * Set the color
-   * @param color
+   * @param {THREE.Color|Object} color
    * @returns {Cube}
    */
   color(color:THREE.Color|Object):Cube {
     if (color instanceof THREE.Color) {
-      for (let i = 0; i < this.threeCube.geometry.faces.length; ++i) {
-        this.threeCube.geometry.faces[i].color.set(color);
+      for (let i = 0; i < this.threeMesh.geometry.faces.length; ++i) {
+        this.threeMesh.geometry.faces[i].color.set(color);
       }
     } else {
-      for (let i = 0; i < this.threeCube.geometry.faces.length; i += 2) {
+      for (let i = 0; i < this.threeMesh.geometry.faces.length; i += 2) {
         let faceColor = color[indexToSide(i)];
         if (faceColor) {
-          this.threeCube.geometry.faces[i].color.set(faceColor);
-          this.threeCube.geometry.faces[i + 1].color.set(faceColor);
+          this.threeMesh.geometry.faces[i].color.set(faceColor);
+          this.threeMesh.geometry.faces[i + 1].color.set(faceColor);
         }
       }
     }
-    this.threeCube.geometry.colorsNeedUpdate = true;
+    this.threeMesh.geometry.colorsNeedUpdate = true;
     return this;
   }
 
@@ -92,8 +92,8 @@ export default class Cube {
    * @returns {Cube}
    */
   opacity(opacity:number):Cube {
-    this.threeCube.material.transparent = true;
-    this.threeCube.material.opacity = opacity;
+    this.threeMesh.material.transparent = true;
+    this.threeMesh.material.opacity = opacity;
     return this;
   }
 }

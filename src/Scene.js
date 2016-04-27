@@ -1,4 +1,5 @@
 import THREE from 'three';
+import Mesh from './Mesh';
 import Iso from './Iso';
 
 export default class Scene {
@@ -57,8 +58,13 @@ export default class Scene {
     this.setupCamera(container);
   }
 
-  add(mesh):Scene {
-    this.threeScene.add(mesh.threeCube);
+  /**
+   * Adds a mesh to the scene
+   * @param {Mesh} mesh
+   * @returns {Scene}
+   */
+  add(mesh:Mesh):Scene {
+    this.threeScene.add(mesh.threeMesh);
     return this;
   }
 

@@ -1,8 +1,10 @@
 import Camera from './Camera';
 import Scene from './Scene';
 import Cube from './Cube';
+import Tile from './Tile';
 import Renderer from './Renderer';
 import DebugStats from './DebugStats'
+import Mesh from './Mesh';
 import THREE from 'three';
 var OrbitControls = require('three-orbit-controls')(THREE);
 
@@ -10,6 +12,7 @@ export default class Iso {
   static DEBUG = false;
   static Camera = Camera;
   static Cube = Cube;
+  static Tile = Tile;
   static Renderer = Renderer;
   static Color = THREE.Color;
 
@@ -28,11 +31,11 @@ export default class Iso {
 
   /**
    * Adds an object to the scene
-   * @param object The Iso Cube
+   * @param mesh The Iso Mesh
    * @returns {Iso}
    */
-  add(object):Iso {
-    this.scene.add(object);
+  add(mesh:Mesh):Iso {
+    this.scene.add(mesh);
     return this;
   }
 
