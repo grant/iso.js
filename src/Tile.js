@@ -61,7 +61,7 @@ export default class Tile extends Mesh {
    */
   rotation(side) {
     // TODO properly position, figure out an API for it.
-    let x, y, z = {0, 0, 0};
+    let x, z = [0, 0];
     switch (side) {
       case Tile.SIDE.XPOS:
         z = -90;
