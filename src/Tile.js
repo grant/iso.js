@@ -1,5 +1,6 @@
 import THREE from 'three';
 import Mesh from './Mesh';
+import Enum from 'es6-enum';
 
 /**
  * A two-dimensional rectangular tile
@@ -12,17 +13,15 @@ export default class Tile extends Mesh {
    */
   constructor(x = 1, z = 1) {
     super();
-    this.size = {x, y: 1, z};
+    this.size = {x, y: 0, z};
 
-    // geometry
-    var rectLength = z, rectWidth = x;
-
+    // geometry (origin at center for easy rotation)
     var rectShape = new THREE.Shape();
-    rectShape.moveTo(0, 0);
-    rectShape.lineTo(0, rectWidth);
-    rectShape.lineTo(rectLength, rectWidth);
-    rectShape.lineTo(rectLength, 0);
-    rectShape.lineTo(0, 0);
+    rectShape.moveTo(-z/2, -x/2);
+    rectShape.lineTo(-z/2, x/2);
+    rectShape.lineTo(z/2, x/2);
+    rectShape.lineTo(z/2, -x/2);
+    rectShape.lineTo(-z/2, -x/2);
 
     let geometry = new THREE.ShapeGeometry(rectShape);
     geometry.rotateX(90 * Math.PI / 180);
@@ -32,7 +31,7 @@ export default class Tile extends Mesh {
     // material
     let material = new THREE.MeshLambertMaterial({
       vertexColors: THREE.FaceColors,
-      side: THREE.DoubleSide,
+      //side: THREE.DoubleSide,
     });
 
     this.threeMesh = new THREE.Mesh(geometry, material);
@@ -45,23 +44,6 @@ export default class Tile extends Mesh {
   }
 
   /**
-   * Set the position
-   * Either pass {x, y, z} or (x, y, z) tuple
-   * @returns {Tile}
-   */
-  position(x, y, z):Tile {
-    let xyz = (arguments.length === 3) ? {x, y, z} : x;
-    this.xyz = xyz;
-
-    this.threeMesh.position.set(
-      xyz.x,
-      xyz.y,
-      xyz.z
-    );
-    return this;
-  }
-
-  /**
    * Sets the visibility of each side of the tile. Double-sided by default.
    * @param isDoubleSided Viewable by both sides?
    */
@@ -71,6 +53,41 @@ export default class Tile extends Mesh {
     } else {
       this.threeMesh.material.side = THREE.FrontSide;
     }
+  }
+
+  /**
+   * Set the rotation of tile.
+   * @param side
+   */
+  rotation(side) {
+    // TODO properly position, figure out an API for it.
+    let x, y, z = {0, 0, 0};
+    switch (side) {
+      case Tile.SIDE.XPOS:
+        z = -90;
+        break;
+      case Tile.SIDE.XNEG:
+        z = 90;
+        break;
+      case Tile.SIDE.YPOS:
+        break;
+      case Tile.SIDE.YNEG:
+        z = 180;
+        break;
+      case Tile.SIDE.ZPOS:
+        x = 90;
+        break;
+      case Tile.SIDE.ZNEG:
+        x = -90;
+        break;
+      default:
+        throw new Error('Unknown Side enum. Use something like `Tile.SIDE.XPOS`.');
+        return this;
+    }
+
+    this.threeMesh.rotateX(x * Math.PI/180);
+    this.threeMesh.rotateZ(z * Math.PI/180);
+    return this;
   }
 
   /**
