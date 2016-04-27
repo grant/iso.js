@@ -32,10 +32,11 @@ export default class Tile extends Mesh {
     // material
     let material = new THREE.MeshLambertMaterial({
       vertexColors: THREE.FaceColors,
+      side: THREE.DoubleSide,
     });
 
     this.threeMesh = new THREE.Mesh(geometry, material);
-    this.color(new Iso.Color('red'));
+    this.color(new Iso.Color('red')); // default color
     this.position(this.xyz);
 
     // shadow
@@ -48,7 +49,7 @@ export default class Tile extends Mesh {
    * Either pass {x, y, z} or (x, y, z) tuple
    * @returns {Tile}
    */
-  position(x, y, z):Mesh {
+  position(x, y, z):Tile {
     let xyz = (arguments.length === 3) ? {x, y, z} : x;
     this.xyz = xyz;
 
@@ -58,6 +59,18 @@ export default class Tile extends Mesh {
       xyz.z
     );
     return this;
+  }
+
+  /**
+   * Sets the visibility of each side of the tile. Double-sided by default.
+   * @param isDoubleSided Viewable by both sides?
+   */
+  doubleSided(isDoubleSided:boolean):Tile {
+    if (isDoubleSided) {
+      this.threeMesh.material.side = THREE.DoubleSide;
+    } else {
+      this.threeMesh.material.side = THREE.FrontSide;
+    }
   }
 
   /**
@@ -79,8 +92,8 @@ export default class Tile extends Mesh {
    * @returns {Tile}
    */
   opacity(opacity:number):Tile {
-    //this.threeMesh.material.transparent = true;
-    //this.threeMesh.material.opacity = opacity;
+    this.threeMesh.material.transparent = true;
+    this.threeMesh.material.opacity = opacity;
     return this;
   }
 }
