@@ -1,13 +1,15 @@
 {
   "name": "iso.js",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "A library for rendering isomorphic graphics",
-  "main": "index.js",
+  "main": "./build/Iso.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "babel ./src --out-dir=./build/",
     "watch": "babel --watch=./src --out-dir=./build/",
     "watch-browser": "watchify ./build/Iso.js -o ./build/browser-iso.js",
-    "flow": "flow; test $? -eq 0 -o $? -eq 2"
+    "flow": "flow; test $? -eq 0 -o $? -eq 2",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
