@@ -11,7 +11,8 @@ export default class Scene {
     this.threeScene.fog = new THREE.FogExp2(0x000000, 5);
 
     // Ambient light
-    this.threeScene.add(new THREE.AmbientLight(0x999999));
+    this.ambientLight = new THREE.AmbientLight(0x404040, 2);
+    this.threeScene.add(this.ambientLight);
 
     // Directional light
     var light = new THREE.DirectionalLight(0xffffff, 1);
@@ -65,6 +66,20 @@ export default class Scene {
    */
   add(mesh:Mesh):Scene {
     this.threeScene.add(mesh.threeMesh);
+    return this;
+  }
+
+  /**
+   * Sets the scene's ambient light color
+   * @param color Light's color
+   * @param intensity (optional) Light's intensity
+   * @returns {Scene}
+   */
+  setAmbientLight(color:Iso.Color, intensity:?number):Scene {
+    this.ambientLight.color = color;
+    if (intensity !== undefined) {
+      this.ambientLight.intensity = intensity;
+    }
     return this;
   }
 

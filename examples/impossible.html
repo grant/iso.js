@@ -35,11 +35,8 @@
 
     var world = new Iso(container);
 
-    var colorDark = new Color('#aa8800');
-    var colorLight = new Color('#decd87');
-
     function getColor(x, z) {
-        return (x + z) % 2 == 0 ? colorLight : colorDark;
+        return (x + z) % 2 == 0 ? new Color('#decd87') : new Color('#aa8800');
     }
 
     function addTile(x, y, z) {

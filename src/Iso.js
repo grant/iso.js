@@ -48,6 +48,17 @@ export default class Iso {
     return this;
   }
 
+  /**
+   * @see Scene#setAmbientLight
+   */
+  setAmbientLight(color:Color, intensity:?number):Iso {
+    this.scene.setAmbientLight(color, intensity);
+    return this;
+  }
+
+  /**
+   * Renders the scene.
+   */
   render() {
     let scene = this.scene;
     let camera = scene.camera;
