@@ -1,6 +1,6 @@
 {
   "name": "iso.js",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "description": "A library for rendering isomorphic graphics",
   "main": "./build/Iso.js",
   "scripts": {
@@ -19,7 +19,7 @@
     "three": "THREE"
   },
   "browser": {
-    "three": "./node_modules/three/three.js"
+    "three": "three/three.js"
   },
   "browserify": {
     "transform": [
