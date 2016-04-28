@@ -70,6 +70,16 @@ export default class Scene {
   }
 
   /**
+   * Remove a mesh from the scene
+   * @param {Mesh} mesh
+   * @returns {Scene}
+   */
+  remove(mesh:Mesh):Scene {
+    this.threeScene.remove(mesh.threeMesh);
+    return this;
+  }
+
+  /**
    * Sets the scene's ambient light color
    * @param color Light's color
    * @param intensity (optional) Light's intensity
