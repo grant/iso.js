@@ -40,6 +40,16 @@ export default class Iso {
   }
 
   /**
+   * Removes an object to the scene
+   * @param mesh The Iso Mesh
+   * @returns {Iso}
+   */
+  remove(mesh:Mesh):Iso {
+    this.scene.remove(mesh);
+    return this;
+  }
+
+  /**
    * Clears the scene from all objects
    * @returns {Iso}
    */
