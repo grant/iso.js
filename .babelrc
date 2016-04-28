@@ -1,8 +1,5 @@
 {
   "plugins": [
-    "transform-react-remove-prop-types",
-    "transform-react-constant-elements",
-    "transform-react-inline-elements",
     "transform-flow-strip-types",
     ["typecheck", {
       "disable": {
