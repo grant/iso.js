@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Walls</title>
+    <style>
+        html, body {
+            width: 100%;
+            height: 100%;
+        }
+
+        body {
+            margin: 0;
+        }
+
+        #container {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<div id="container"></div>
+
+<!-- Scripts -->
+<script src="../build/browser-iso.js"></script>
+<script>
+    var Tile = Iso.Tile;
+    var Color = Iso.Color;
+    Iso.DEBUG = false;
+
+    var container = document.getElementById('container');
+
+    var world = new Iso(container);
+
+    let s = 1;
+
+    // YPOS & YNEG
+    world.add(new Tile(s, s).position(0, s * 2, 0).rotation(Tile.SIDE.YPOS));
+    world.add(new Tile(s, s).position(0, 0, 0).rotation(Tile.SIDE.YNEG));
+
+    // XPOS & XNEG
+    world.add(new Tile(s, s).position(-s, s, 0).rotation(Tile.SIDE.XPOS));
+    world.add(new Tile(s, s).position(s, s, 0).rotation(Tile.SIDE.XNEG));
+
+    // ZPOS & ZNEG
+    world.add(new Tile(s, s).position(0, s, s).rotation(Tile.SIDE.ZNEG));
+    world.add(new Tile(s, s).position(0, s, -s).rotation(Tile.SIDE.ZPOS));
+
+    world.render();
+</script>
+</body>
+</html>

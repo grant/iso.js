@@ -1,6 +1,6 @@
 {
   "name": "iso.js",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "A library for rendering isomorphic graphics",
   "main": "./build/Iso.js",
   "scripts": {
